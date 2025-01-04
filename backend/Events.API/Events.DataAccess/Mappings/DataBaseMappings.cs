@@ -12,6 +12,9 @@ namespace Events.DataAccess.Mappings
             CreateMap<ImageEntity, Image>();
             CreateMap<ParticipantEntity, Participant>();
             CreateMap<RegistrationEntity, Registration>();
+
+            CreateMap<Image, ImageEntity>();
+            CreateMap<Event, EventEntity>();
         }
     }
 }

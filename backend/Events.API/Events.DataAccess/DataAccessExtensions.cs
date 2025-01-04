@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Events.DataAccess.Repositories;
 
 
 namespace Events.DataAccess
@@ -15,6 +16,9 @@ namespace Events.DataAccess
             {
                 options.UseNpgsql(configuration.GetConnectionString(nameof(EventsDbContext)));
             });
+
+            services.AddScoped<IEventsRepository, EventsRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
 
             return services;
         }

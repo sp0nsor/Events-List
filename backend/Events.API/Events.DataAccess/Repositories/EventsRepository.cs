@@ -17,19 +17,9 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task Create(Event Event)
+        public async Task Create(Event @event)
         {
-            var eventEnity = new EventEntity()
-            {
-                Id = Event.Id,
-                Name = Event.Name,
-                Description = Event.Description,
-                Place = Event.Place,
-                Category = Event.Category,
-                MaxParticipantCount = Event.MaxParticipantCount,
-                Time = Event.Time,
-                ImageId = Event.Image.Id
-            };
+            var eventEnity =  mapper.Map<EventEntity>(@event);
 
             await context.Events.AddAsync(eventEnity);
             await context.SaveChangesAsync();
@@ -38,6 +28,7 @@ namespace Events.DataAccess.Repositories
         public async Task<List<Event>> Get()
         {
             var eventEntities = await context.Events
+                .Include(e => e.Image)
                 .AsNoTracking()
                 .ToListAsync();
 

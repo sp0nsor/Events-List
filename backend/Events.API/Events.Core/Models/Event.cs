@@ -11,7 +11,7 @@
             string place,
             DateTime time,
             string category,
-            int maxPeopleCount,
+            int maxParticipantCount,
             Image image)
         {
             Id = id;
@@ -20,7 +20,7 @@
             Place = place;
             Time = time;
             Category = category;
-            MaxParticipantCount = maxPeopleCount;
+            MaxParticipantCount = maxParticipantCount;
             Image = image;
         }
 
@@ -44,7 +44,7 @@
 
         public static Event Create(Guid id, string name, string description,
             string place, DateTime time, string category,
-            int maxUsersCount, Image image)
+            int maxParticipantCount, Image image)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Exception("Name cannot be null");
@@ -58,13 +58,13 @@
             if (string.IsNullOrWhiteSpace(category))
                 throw new Exception("Category cannot be null");
 
-            if (maxUsersCount <= 0)
+            if (maxParticipantCount <= 0)
                 throw new Exception("People count cannot be negative");
 
             if (time < DateTime.Now)
                 throw new Exception("Date must be longer than today");
 
-            return new Event(id, name, description, place, time, category, maxUsersCount, image);
+            return new Event(id, name, description, place, time, category, maxParticipantCount, image);
         }
     }
 }
