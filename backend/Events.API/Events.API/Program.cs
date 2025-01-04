@@ -1,8 +1,14 @@
+using Events.DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+
+services.AddDataAccess(configuration);
 
 var app = builder.Build();
 

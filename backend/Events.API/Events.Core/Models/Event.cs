@@ -2,7 +2,7 @@
 {
     public class Event
     {
-        private readonly List<User> users = [];
+        private readonly List<Registration> registrations = [];
 
         private Event(
             Guid id,
@@ -12,7 +12,7 @@
             DateTime time,
             string category,
             int maxPeopleCount,
-            Image? image)
+            Image image)
         {
             Id = id;
             Name = name;
@@ -20,7 +20,7 @@
             Place = place;
             Time = time;
             Category = category;
-            MaxPeopleCount = maxPeopleCount;
+            MaxParticipantCount = maxPeopleCount;
             Image = image;
         }
 
@@ -36,15 +36,15 @@
 
         public string Category {  get; }
 
-        public int MaxPeopleCount { get; }
+        public int MaxParticipantCount { get; }
 
-        public Image? Image { get; }
+        public Image Image { get; }
 
-        public IReadOnlyList<User> Users => users;
+        public IReadOnlyList<Registration> Registrations => registrations;
 
         public static Event Create(Guid id, string name, string description,
             string place, DateTime time, string category,
-            int maxPeopleCount, Image? image = null)
+            int maxUsersCount, Image image)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new Exception("Name cannot be null");
@@ -58,13 +58,13 @@
             if (string.IsNullOrWhiteSpace(category))
                 throw new Exception("Category cannot be null");
 
-            if (maxPeopleCount <= 0)
+            if (maxUsersCount <= 0)
                 throw new Exception("People count cannot be negative");
 
             if (time < DateTime.Now)
                 throw new Exception("Date must be longer than today");
 
-            return new Event(id, name, description, place, time, category, maxPeopleCount, image);
+            return new Event(id, name, description, place, time, category, maxUsersCount, image);
         }
     }
 }

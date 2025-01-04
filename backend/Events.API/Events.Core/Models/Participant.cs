@@ -2,24 +2,22 @@
 
 namespace Events.Core.Models
 {
-    public class User
+    public class Participant
     {
-        private readonly List<Event> events = [];
+        private readonly List<Registration> registrations = [];
 
-        private User(
+        private Participant(
             Guid id,
             string firstName,
             string lastName,
             DateTime birthDate,
-            string email,
-            string passwordHash)
+            string email)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             BirhtDate = birthDate;
             Email = email;
-            PasswordHash = passwordHash;
         }
 
         public Guid Id { get; }
@@ -32,12 +30,10 @@ namespace Events.Core.Models
 
         public string Email { get; }
 
-        public string PasswordHash { get; }
+        public IReadOnlyList<Registration> Registrations => registrations;
 
-        public IReadOnlyList<Event> Events => events;
-
-        public static User Create(Guid id, string firstName, string lastName,
-            DateTime birthDate, string email, string passwordHash)
+        public static Participant Create(Guid id, string firstName, string lastName,
+            DateTime birthDate, string email)
         {
             if (string.IsNullOrEmpty(firstName))
                 throw new Exception("First name cannot be null");
@@ -51,7 +47,7 @@ namespace Events.Core.Models
             if (string.IsNullOrWhiteSpace(email))
                 throw new Exception("Email cannot be null");
 
-            return new User(id, firstName, lastName, birthDate, email, passwordHash);
+            return new Participant(id, firstName, lastName, birthDate, email);
         }
 
     }
