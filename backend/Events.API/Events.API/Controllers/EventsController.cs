@@ -44,9 +44,14 @@ namespace Events.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetEvents()
+        public async Task<ActionResult> GetEvents([FromQuery] GetEventRequest request)
         {
-            var events = await eventsService.GetEvents();
+            var events = await eventsService.GetEvents(
+                request.SearchName,
+                request.SearchPlace,
+                request.SearchCategory,
+                request.SortItem,
+                request.SortOrder);
 
             var response = events
                 .Select(e => new GetEventResponse(
@@ -58,6 +63,24 @@ namespace Events.API.Controllers
                         e.Category,
                         e.MaxParticipantCount,
                         e.Image.FileName));
+
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetEventById([FromRoute] Guid id)
+        {
+            var @event = await eventsService.GetEventById(id);
+
+            var response = new GetEventResponse(
+                @event.Id,
+                @event.Name,
+                @event.Description,
+                @event.Place,
+                @event.Time,
+                @event.Category,
+                @event.MaxParticipantCount,
+                @event.Image.FileName);
 
             return Ok(response);
         }

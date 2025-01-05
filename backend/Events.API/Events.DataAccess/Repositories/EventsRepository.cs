@@ -3,6 +3,7 @@ using Events.Core.Models;
 using Events.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
+using System.Linq.Expressions;
 
 namespace Events.DataAccess.Repositories
 {
@@ -25,14 +26,45 @@ namespace Events.DataAccess.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<Event>> Get()
+        public async Task<List<Event>> Get(string? searchName, string? searchPlace, 
+            string? searchCategory, string? sortItem, string? sortOrder)
         {
-            var eventEntities = await context.Events
+            var eventsQuery = context.Events
+                .Include(e => e.Image)
+                .AsNoTracking()
+                .Where(e =>
+                    (!string.IsNullOrWhiteSpace(searchName) && e.Name.ToLower().Contains(searchName.ToLower())) ||
+                    (!string.IsNullOrWhiteSpace(searchPlace) && e.Place.ToLower().Contains(searchPlace.ToLower())) ||
+                    (!string.IsNullOrWhiteSpace(searchCategory) && e.Category.ToLower().Contains(searchCategory.ToLower()))
+                );
+
+            Expression<Func<EventEntity, object>> selectorKey = sortItem?.ToLower() switch
+            {
+                "date" => @event => @event.Time,
+                "name" => @event => @event.Name,
+                _ => @event => @event.Id
+            };
+
+            eventsQuery = sortOrder == "desc"
+                ? eventsQuery.OrderByDescending(selectorKey)
+                : eventsQuery.OrderBy(selectorKey);
+
+            var eventEntities = await eventsQuery
                 .Include(e => e.Image)
                 .AsNoTracking()
                 .ToListAsync();
 
             return mapper.Map<List<Event>>(eventEntities);
+        }
+
+        public async Task<Event> GetById(Guid id)
+        {
+            var eventEntity = await context.Events
+                .Include(e => e.Image)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Event not found");
+
+            return mapper.Map<Event>(eventEntity);
         }
 
         public async Task Update(Guid id, string name, string description,

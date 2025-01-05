@@ -17,9 +17,16 @@ namespace Events.Application.Services
             await eventsRepository.Create(@event);
         }
 
-        public async Task<List<Event>> GetEvents()
+        public async Task<List<Event>> GetEvents(string? searchName, string? searchPlace,
+            string? searchCategory, string? sortItem, string? sortOrder)
         {
-            return await eventsRepository.Get();
+            return await eventsRepository.Get(searchName, searchPlace,
+                searchCategory, sortItem, sortOrder);
+        }
+
+        public async Task<Event> GetEventById(Guid id)
+        {
+            return await eventsRepository.GetById(id);
         }
 
         public async Task UpdateEvent(Guid id, string name, string description,
