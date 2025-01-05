@@ -12,7 +12,7 @@ namespace Events.Application.Services
             this.eventsRepository = eventsRepository;
         }
 
-        public async Task Create(Event @event)
+        public async Task CreateEvent(Event @event)
         {
             await eventsRepository.Create(@event);
         }

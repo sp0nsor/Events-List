@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Events.DataAccess.Migrations
 {
     [DbContext(typeof(EventsDbContext))]
-    [Migration("20250104181312_InitialCreate")]
+    [Migration("20250105170105_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -125,7 +125,7 @@ namespace Events.DataAccess.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ParticpantId")
+                    b.Property<Guid>("ParticipantId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -135,7 +135,7 @@ namespace Events.DataAccess.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("ParticpantId");
+                    b.HasIndex("ParticipantId");
 
                     b.ToTable("Registrations");
                 });
@@ -161,7 +161,7 @@ namespace Events.DataAccess.Migrations
 
                     b.HasOne("Events.DataAccess.Entities.ParticipantEntity", "Participant")
                         .WithMany("Registrations")
-                        .HasForeignKey("ParticpantId")
+                        .HasForeignKey("ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

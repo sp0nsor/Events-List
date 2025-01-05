@@ -19,6 +19,8 @@ namespace Events.DataAccess
 
             services.AddScoped<IEventsRepository, EventsRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IParticipantsRepository, ParticipantsRepository>();
+            services.AddScoped<IRegistrationsRepository, RegistrationsRepository>();
 
             return services;
         }

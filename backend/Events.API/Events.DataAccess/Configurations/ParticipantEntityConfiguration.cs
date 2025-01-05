@@ -27,7 +27,7 @@ namespace Events.DataAccess.Configurations
 
             builder.HasMany(p => p.Registrations)
                    .WithOne(r => r.Participant)
-                   .HasForeignKey(r => r.ParticpantId)
+                   .HasForeignKey(r => r.ParticipantId)
                    .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -7,7 +7,7 @@
             Id = id;
             EventId = eventId;
             ParticipantId = participantId;
-            RegistrationDate = DateTime.Now;
+            RegistrationDate = DateTime.UtcNow;
         }
 
         public Guid Id { get; }

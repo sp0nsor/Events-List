@@ -4,7 +4,7 @@ namespace Events.Application.Services
 {
     public interface IEventsService
     {
-        Task Create(Event @event);
+        Task CreateEvent(Event @event);
         Task<List<Event>> GetEvents(string? searchName, string? searchPlace,
             string? searchCategory, string? sortItem, string? sortOrder);
         Task UpdateEvent(Guid id, string name, string description, string place,

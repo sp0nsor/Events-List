@@ -9,6 +9,8 @@ namespace Events.Application
         {
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEventsService, EventsService>();
+            services.AddScoped<IParticipantService, ParticipantService>();
+            services.AddScoped<IRegistrationsService, RegistrationsService>();
 
             return services;
         }

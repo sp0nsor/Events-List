@@ -16,7 +16,7 @@ namespace Events.Core.Models
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            BirhtDate = birthDate;
+            BirthDate = birthDate;
             Email = email;
         }
 
@@ -26,9 +26,9 @@ namespace Events.Core.Models
         
         public string LastName {  get; }
 
-        public DateTime BirhtDate { get; }
-
         public string Email { get; }
+
+        public DateTime BirthDate { get; }
 
         public IReadOnlyList<Registration> Registrations => registrations;
 

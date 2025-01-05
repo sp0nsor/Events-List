@@ -1,9 +1,7 @@
 ﻿using Events.API.Contracts.Events;
 using Events.Application.Services;
 using Events.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Events.API.Controllers
 {
@@ -38,7 +36,7 @@ namespace Events.API.Controllers
                 request.MaxParticipantCount,
                 image);
 
-            await eventsService.Create(@event);
+            await eventsService.CreateEvent(@event);
 
             return Ok();
         }
@@ -88,8 +86,14 @@ namespace Events.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateEvent([FromRoute] Guid id, [FromBody] UpdateEventRequest request)
         {
-            await eventsService.UpdateEvent(id, request.Name, request.Description,
-                request.Place, request.Category, request.MaxParticipantCount, request.Time);
+            await eventsService.UpdateEvent(
+                id,
+                request.Name,
+                request.Description,
+                request.Place,
+                request.Category,
+                request.MaxParticipantCount,
+                request.Time);
 
             return Ok();
         }

@@ -19,7 +19,7 @@ namespace Events.DataAccess.Configurations
 
             builder.HasOne(r => r.Participant)
                    .WithMany(p => p.Registrations)
-                   .HasForeignKey(r => r.ParticpantId);
+                   .HasForeignKey(r => r.ParticipantId);
         }
     }
 }

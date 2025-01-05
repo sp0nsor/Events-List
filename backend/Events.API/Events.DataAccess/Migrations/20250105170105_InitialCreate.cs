@@ -69,7 +69,7 @@ namespace Events.DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     EventId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ParticpantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ParticipantId = table.Column<Guid>(type: "uuid", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -82,8 +82,8 @@ namespace Events.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Registrations_Participants_ParticpantId",
-                        column: x => x.ParticpantId,
+                        name: "FK_Registrations_Participants_ParticipantId",
+                        column: x => x.ParticipantId,
                         principalTable: "Participants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -101,9 +101,9 @@ namespace Events.DataAccess.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Registrations_ParticpantId",
+                name: "IX_Registrations_ParticipantId",
                 table: "Registrations",
-                column: "ParticpantId");
+                column: "ParticipantId");
         }
 
         /// <inheritdoc />
