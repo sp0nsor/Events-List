@@ -1,6 +1,5 @@
 ﻿using Events.Core.Models;
 using Events.DataAccess.Repositories;
-using System.Reflection.Emit;
 
 namespace Events.Application.Services
 {

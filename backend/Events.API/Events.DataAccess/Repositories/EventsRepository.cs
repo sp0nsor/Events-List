@@ -26,16 +26,16 @@ namespace Events.DataAccess.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<Event>> Get(string? searchName, string? searchPlace, 
+        public async Task<List<Event>> Get(string? searchName, string? searchPlace,
             string? searchCategory, string? sortItem, string? sortOrder)
         {
             var eventsQuery = context.Events
                 .Include(e => e.Image)
                 .AsNoTracking()
                 .Where(e =>
-                    (!string.IsNullOrWhiteSpace(searchName) && e.Name.ToLower().Contains(searchName.ToLower())) ||
-                    (!string.IsNullOrWhiteSpace(searchPlace) && e.Place.ToLower().Contains(searchPlace.ToLower())) ||
-                    (!string.IsNullOrWhiteSpace(searchCategory) && e.Category.ToLower().Contains(searchCategory.ToLower()))
+                    (string.IsNullOrWhiteSpace(searchName) || e.Name.ToLower().Contains(searchName.ToLower())) ||
+                    (string.IsNullOrWhiteSpace(searchPlace) || e.Place.ToLower().Contains(searchPlace.ToLower())) ||
+                    (string.IsNullOrWhiteSpace(searchCategory) || e.Category.ToLower().Contains(searchCategory.ToLower()))
                 );
 
             Expression<Func<EventEntity, object>> selectorKey = sortItem?.ToLower() switch
@@ -55,6 +55,19 @@ namespace Events.DataAccess.Repositories
                 .ToListAsync();
 
             return mapper.Map<List<Event>>(eventEntities);
+        }
+
+        public async Task<List<Participant>> GetParticipants(Guid eventId)
+        {
+            var participantsEntities = await context.Events
+                .AsNoTracking()
+                .Where(e => e.Id == eventId)
+                .Include(e => e.Registrations)
+                    .ThenInclude(r => r.Participant)
+                .SelectMany(e => e.Registrations.Select(r => r.Participant))
+                .ToListAsync();
+
+            return mapper.Map<List<Participant>>(participantsEntities);
         }
 
         public async Task<Event> GetById(Guid id)

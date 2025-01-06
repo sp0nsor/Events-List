@@ -6,7 +6,7 @@
 
         public Guid EventId { get; set; }
 
-        public EventEntity? Event { get; set; } = new();
+        public EventEntity? Event { get; set; }
 
         public Guid ParticipantId { get; set; }
 

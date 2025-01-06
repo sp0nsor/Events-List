@@ -1,4 +1,5 @@
 ﻿using Events.API.Contracts.Events;
+using Events.API.Contracts.Participants;
 using Events.Application.Services;
 using Events.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,22 @@ namespace Events.API.Controllers
                         e.Category,
                         e.MaxParticipantCount,
                         e.Image.FileName));
+
+            return Ok(response);
+        }
+
+        [HttpGet("/qwe{eventId}")]
+        public async Task<ActionResult> GetEventParticipant([FromRoute] Guid eventId)
+        {
+            var participants = await eventsService.GetEventParticipant(eventId);
+
+            var response = participants
+                .Select(p => new GetParticipantResponse(
+                    p.Id,
+                    p.FirstName,
+                    p.LastName,
+                    p.Email,
+                    p.BirthDate));
 
             return Ok(response);
         }

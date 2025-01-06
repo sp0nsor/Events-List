@@ -24,6 +24,13 @@ namespace Events.Application.Services
                 searchCategory, sortItem, sortOrder);
         }
 
+        public async Task<List<Participant>> GetEventParticipant(Guid eventId)
+        {
+            var participants = await eventsRepository.GetParticipants(eventId);
+
+            return participants;
+        }
+
         public async Task<Event> GetEventById(Guid id)
         {
             return await eventsRepository.GetById(id);

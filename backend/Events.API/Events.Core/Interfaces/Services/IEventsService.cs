@@ -9,6 +9,7 @@ namespace Events.Application.Services
             string? searchCategory, string? sortItem, string? sortOrder);
         Task UpdateEvent(Guid id, string name, string description, string place,
             string category, int maxParticipantCount, DateTime time);
+        Task<List<Participant>> GetEventParticipant(Guid eventId);
         Task<Event> GetEventById(Guid id);
         Task DeleteEvent(Guid id);
     }

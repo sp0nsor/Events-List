@@ -11,5 +11,6 @@ namespace Events.DataAccess.Repositories
         Task<Event> GetById(Guid id);
         Task Update(Guid id, string name, string description, string place,
             string category, int maxParticipantCount, DateTime time);
+        Task<List<Participant>> GetParticipants(Guid eventId);
     }
 }
