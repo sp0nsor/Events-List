@@ -2,7 +2,6 @@
 using Events.Core.Models;
 using Events.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Validations;
 using System.Linq.Expressions;
 
 namespace Events.DataAccess.Repositories
