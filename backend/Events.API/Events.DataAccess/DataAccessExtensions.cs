@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Events.DataAccess.Repositories;
+using Events.DataAccess.Interfaces;
 
 
 namespace Events.DataAccess

@@ -1,4 +1,5 @@
-﻿using Events.Application.Services;
+﻿using Events.Application.Interfaces;
+using Events.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Events.Application

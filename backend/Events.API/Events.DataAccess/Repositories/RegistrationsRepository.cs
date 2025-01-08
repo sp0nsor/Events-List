@@ -2,6 +2,7 @@
 using Events.Core.Models;
 using Events.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Events.DataAccess.Interfaces;
 
 namespace Events.DataAccess.Repositories
 {

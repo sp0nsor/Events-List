@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Events.Core\Events.Core.csproj" />
+    <ProjectReference Include="..\Events.DataAccess\Events.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Events.Core.Models;
 
-namespace Events.Application.Services
+namespace Events.Application.Interfaces
 {
     public interface IEventsService
     {

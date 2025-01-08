@@ -1,5 +1,6 @@
-﻿using Events.Core.Models;
-using Events.DataAccess.Repositories;
+﻿using Events.Application.Interfaces;
+using Events.Core.Models;
+using Events.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace Events.Application.Services

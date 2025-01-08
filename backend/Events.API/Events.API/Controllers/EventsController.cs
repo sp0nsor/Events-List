@@ -1,6 +1,6 @@
 ﻿using Events.API.Contracts.Events;
 using Events.API.Contracts.Participants;
-using Events.Application.Services;
+using Events.Application.Interfaces;
 using Events.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 

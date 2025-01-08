@@ -1,5 +1,6 @@
-﻿using Events.Core.Models;
-using Events.DataAccess.Repositories;
+﻿using Events.Application.Interfaces;
+using Events.Core.Models;
+using Events.DataAccess.Interfaces;
 
 namespace Events.Application.Services
 {

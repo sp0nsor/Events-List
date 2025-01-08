@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Events.API.Contracts.Events
+﻿namespace Events.API.Contracts.Events
 {
     public record CreateEventRequest(
         string Name,

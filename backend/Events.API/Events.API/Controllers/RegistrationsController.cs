@@ -1,7 +1,6 @@
-﻿using Events.API.Contracts.Registrations;
-using Events.Application.Services;
+﻿using Events.Application.Interfaces;
+using Events.API.Contracts.Registrations;
 using Events.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers

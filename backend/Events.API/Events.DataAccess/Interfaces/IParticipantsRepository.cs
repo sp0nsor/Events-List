@@ -1,6 +1,6 @@
 ﻿using Events.Core.Models;
 
-namespace Events.DataAccess.Repositories
+namespace Events.DataAccess.Interfaces
 {
     public interface IParticipantsRepository
     {
