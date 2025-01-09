@@ -1,6 +1,5 @@
 ﻿using Events.Application.Interfaces;
-using Events.API.Contracts.Registrations;
-using Events.Core.Models;
+using Events.Application.Contracts.Registrations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers
@@ -19,9 +18,7 @@ namespace Events.API.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateRegistration([FromBody] CreateRegistrationRequest request)
         {
-            var registration = Registration.Create(Guid.NewGuid(), request.EventId, request.ParticipantId);
-
-            await registrationsService.CreateRegistration(registration);
+            await registrationsService.CreateRegistration(request);
 
             return Ok();
         }

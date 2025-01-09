@@ -1,4 +1,6 @@
-﻿namespace Events.API.Contracts.Events
+﻿using Events.Application.Contracts.Images;
+
+namespace Events.Application.Contracts.Events
 {
     public record GetEventResponse(
         Guid Id,
@@ -8,5 +10,5 @@
         DateTime Time, 
         string Category,
         int MaxParticipantCount,
-        string ImagePath);
+        GetImageResponse Image);
 }

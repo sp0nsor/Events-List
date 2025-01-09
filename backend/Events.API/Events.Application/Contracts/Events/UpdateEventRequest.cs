@@ -1,11 +1,10 @@
-﻿namespace Events.API.Contracts.Events
+﻿namespace Events.Application.Contracts.Events
 {
-    public record CreateEventRequest(
+    public record UpdateEventRequest(
         string Name,
         string Description,
         string Place,
         string Category,
         int MaxParticipantCount,
-        DateTime Time,
-        IFormFile Image);
+        DateTime Time);
 }

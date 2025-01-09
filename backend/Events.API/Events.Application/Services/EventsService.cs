@@ -1,47 +1,64 @@
 ﻿using Events.Core.Models;
 using Events.Application.Interfaces;
 using Events.DataAccess.Interfaces;
+using Azure.Core;
+using Events.Application.Contracts.Events;
+using AutoMapper;
 
 namespace Events.Application.Services
 {
     public class EventsService : IEventsService
     {
         private readonly IEventsRepository eventsRepository;
+        private readonly IImageService imageService;
+        private readonly IMapper mapper;
 
-        public EventsService(IEventsRepository eventsRepository)
+        public EventsService(
+            IEventsRepository eventsRepository,
+            IImageService imageService,
+            IMapper mapper)
         {
             this.eventsRepository = eventsRepository;
+            this.imageService = imageService;
+            this.mapper = mapper;
         }
 
-        public async Task CreateEvent(Event @event)
+        public async Task CreateEvent(CreateEventRequest request)
         {
+            var image = await imageService.CreateImage(request.Image);
+
+            var @event = Event.Create(
+                image.EventId,
+                request.Name,
+                request.Description,
+                request.Place,
+                request.Time,
+                request.Category,
+                request.MaxParticipantCount,
+                image);
+
             await eventsRepository.Create(@event);
         }
 
-        public async Task<List<Event>> GetEvents(string? searchName, string? searchPlace,
-            string? searchCategory, string? sortItem, string? sortOrder)
+        public async Task<List<GetEventResponse>> GetEvents(GetEventRequest request)
         {
-            return await eventsRepository.Get(searchName, searchPlace,
-                searchCategory, sortItem, sortOrder);
+            var events = await eventsRepository.Get(request.SearchName, request.SearchPlace,
+                request.SearchCategory, request.SortItem, request.SortOrder);
+
+            return mapper.Map<List<GetEventResponse>>(events);
         }
 
-        public async Task<List<Participant>> GetEventParticipant(Guid eventId)
+        public async Task<GetEventResponse> GetEventById(Guid id)
         {
-            var participants = await eventsRepository.GetParticipants(eventId);
+            var @event = await eventsRepository.GetById(id);
 
-            return participants;
+            return mapper.Map<GetEventResponse>(@event);
         }
 
-        public async Task<Event> GetEventById(Guid id)
+        public async Task UpdateEvent(Guid id, UpdateEventRequest request)
         {
-            return await eventsRepository.GetById(id);
-        }
-
-        public async Task UpdateEvent(Guid id, string name, string description,
-            string place, string category, int maxParticipantCount, DateTime time)
-        {
-            await eventsRepository.Update(id, name, description,
-                place, category, maxParticipantCount, time);
+            await eventsRepository.Update(id, request.Name, request.Description,
+                request.Place, request.Category, request.MaxParticipantCount, request.Time);
         }
 
         public async Task DeleteEvent(Guid id)

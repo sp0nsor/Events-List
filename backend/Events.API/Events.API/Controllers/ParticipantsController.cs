@@ -1,6 +1,5 @@
 ﻿using Events.Application.Interfaces;
-using Events.API.Contracts.Participants;
-using Events.Core.Models;
+using Events.Application.Contracts.Participants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers
@@ -19,14 +18,7 @@ namespace Events.API.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateParticipant([FromBody] CreateParticipantRequest request)
         {
-            var participant = Participant.Create(
-                Guid.NewGuid(),
-                request.FirstName,
-                request.LastName,
-                request.BirthDate,
-                request.Email);
-
-            await participantService.CreateParticipant(participant);
+            await participantService.CreateParticipant(request);
 
             return Ok();
         }
@@ -34,15 +26,7 @@ namespace Events.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetParticipants()
         {
-            var participants = await participantService.GetPartcipants();
-
-            var response = participants.Select(p =>
-                new GetParticipantResponse(
-                    p.Id,
-                    p.FirstName,
-                    p.LastName,
-                    p.Email,
-                    p.BirthDate));
+            var response = await participantService.GetPartcipants();
 
             return Ok(response);
         }
@@ -50,14 +34,7 @@ namespace Events.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetParticipantById([FromRoute] Guid id)
         {
-            var participant = await participantService.GetPartcipantById(id);
-
-            var response = new GetParticipantResponse(
-                participant.Id,
-                participant.FirstName,
-                participant.LastName,
-                participant.Email,
-                participant.BirthDate);
+            var response = await participantService.GetPartcipantById(id);
 
             return Ok(response);
         }

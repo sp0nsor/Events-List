@@ -1,4 +1,4 @@
-﻿namespace Events.API.Contracts.Events
+﻿namespace Events.Application.Contracts.Events
 {
     public record GetEventRequest(
         string? SearchName,

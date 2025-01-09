@@ -1,12 +1,13 @@
-﻿using Events.Core.Models;
+﻿using Events.Application.Contracts.Participants;
+using Events.Core.Models;
 
 namespace Events.Application.Interfaces
 {
     public interface IParticipantService
     {
-        Task CreateParticipant(Participant participant);
+        Task CreateParticipant(CreateParticipantRequest request);
         Task DeleteParticipant(Guid id);
-        Task<Participant> GetPartcipantById(Guid id);
-        Task<List<Participant>> GetPartcipants();
+        Task<GetParticipantResponse> GetPartcipantById(Guid id);
+        Task<List<GetParticipantResponse>> GetPartcipants();
     }
 }

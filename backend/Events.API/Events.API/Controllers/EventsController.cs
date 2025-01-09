@@ -1,7 +1,5 @@
-﻿using Events.API.Contracts.Events;
-using Events.API.Contracts.Participants;
+﻿using Events.Application.Contracts.Events;
 using Events.Application.Interfaces;
-using Events.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers
@@ -10,9 +8,6 @@ namespace Events.API.Controllers
     [Route("[controller]")]
     public class EventsController : ControllerBase
     {
-        private readonly string staticFilePath =
-            Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles\\Images");
-
         private readonly IImageService imageService;
         private readonly IEventsService eventsService;
 
@@ -25,19 +20,7 @@ namespace Events.API.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateEvent([FromForm] CreateEventRequest request)
         {
-            var image = await imageService.CreateImage(request.Image, staticFilePath);
-
-            var @event = Event.Create(
-                image.EventId,
-                request.Name,
-                request.Description,
-                request.Place,
-                request.Time,
-                request.Category,
-                request.MaxParticipantCount,
-                image);
-
-            await eventsService.CreateEvent(@event);
+            await eventsService.CreateEvent(request);
 
             return Ok();
         }
@@ -45,39 +28,7 @@ namespace Events.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetEvents([FromQuery] GetEventRequest request)
         {
-            var events = await eventsService.GetEvents(
-                request.SearchName,
-                request.SearchPlace,
-                request.SearchCategory,
-                request.SortItem,
-                request.SortOrder);
-
-            var response = events
-                .Select(e => new GetEventResponse(
-                        e.Id,
-                        e.Name,
-                        e.Description,
-                        e.Place,
-                        e.Time,
-                        e.Category,
-                        e.MaxParticipantCount,
-                        e.Image.FileName));
-
-            return Ok(response);
-        }
-
-        [HttpGet("/qwe{eventId}")]
-        public async Task<ActionResult> GetEventParticipant([FromRoute] Guid eventId)
-        {
-            var participants = await eventsService.GetEventParticipant(eventId);
-
-            var response = participants
-                .Select(p => new GetParticipantResponse(
-                    p.Id,
-                    p.FirstName,
-                    p.LastName,
-                    p.Email,
-                    p.BirthDate));
+            var response = await eventsService.GetEvents(request);
 
             return Ok(response);
         }
@@ -85,17 +36,7 @@ namespace Events.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEventById([FromRoute] Guid id)
         {
-            var @event = await eventsService.GetEventById(id);
-
-            var response = new GetEventResponse(
-                @event.Id,
-                @event.Name,
-                @event.Description,
-                @event.Place,
-                @event.Time,
-                @event.Category,
-                @event.MaxParticipantCount,
-                @event.Image.FileName);
+            var response = await eventsService.GetEventById(id);
 
             return Ok(response);
         }
@@ -103,14 +44,7 @@ namespace Events.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateEvent([FromRoute] Guid id, [FromBody] UpdateEventRequest request)
         {
-            await eventsService.UpdateEvent(
-                id,
-                request.Name,
-                request.Description,
-                request.Place,
-                request.Category,
-                request.MaxParticipantCount,
-                request.Time);
+            await eventsService.UpdateEvent(id, request);
 
             return Ok();
         }

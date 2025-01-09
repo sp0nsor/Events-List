@@ -1,4 +1,4 @@
-﻿namespace Events.API.Contracts.Registrations
+﻿namespace Events.Application.Contracts.Registrations
 {
     public record CreateRegistrationRequest(
         Guid EventId,
