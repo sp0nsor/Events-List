@@ -4,6 +4,7 @@ using Events.DataAccess.Interfaces;
 using Azure.Core;
 using Events.Application.Contracts.Events;
 using AutoMapper;
+using Events.Application.Contracts.Participants;
 
 namespace Events.Application.Services
 {
@@ -46,6 +47,13 @@ namespace Events.Application.Services
                 request.SearchCategory, request.SortItem, request.SortOrder);
 
             return mapper.Map<List<GetEventResponse>>(events);
+        }
+
+        public async Task<List<GetParticipantResponse>> GetEventParticipants(Guid id)
+        {
+            var participants = await eventsRepository.GetParticipants(id);
+
+            return mapper.Map<List<GetParticipantResponse>>(participants);
         }
 
         public async Task<GetEventResponse> GetEventById(Guid id)

@@ -33,6 +33,14 @@ namespace Events.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("Participants")]
+        public async Task<ActionResult> GetEventParticipants([FromQuery] Guid id)
+        {
+            var response = await eventsService.GetEventParticipants(id);
+
+            return Ok(response);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEventById([FromRoute] Guid id)
         {
