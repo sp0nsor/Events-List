@@ -20,9 +20,7 @@ namespace Events.DataAccess.Repositories
         public async Task Create(Registration registration)
         {
             var registrationEntity = mapper.Map<RegistrationEntity>(registration);
-
             await context.Registrations.AddAsync(registrationEntity);
-            await context.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)

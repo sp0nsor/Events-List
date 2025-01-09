@@ -20,9 +20,7 @@ namespace Events.DataAccess.Repositories
         public async Task Create(Participant participant)
         {
             var participantEntity = mapper.Map<ParticipantEntity>(participant);
-
             await context.Participants.AddAsync(participantEntity);
-            await context.SaveChangesAsync();
         }
 
         public async Task<List<Participant>> Get()

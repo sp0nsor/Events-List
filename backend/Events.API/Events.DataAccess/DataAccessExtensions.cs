@@ -18,10 +18,7 @@ namespace Events.DataAccess
                 options.UseNpgsql(configuration.GetConnectionString(nameof(EventsDbContext)));
             });
 
-            services.AddScoped<IEventsRepository, EventsRepository>();
-            services.AddScoped<IImageRepository, ImageRepository>();
-            services.AddScoped<IParticipantsRepository, ParticipantsRepository>();
-            services.AddScoped<IRegistrationsRepository, RegistrationsRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

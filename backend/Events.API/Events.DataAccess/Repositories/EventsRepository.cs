@@ -21,9 +21,7 @@ namespace Events.DataAccess.Repositories
         public async Task Create(Event @event)
         {
             var eventEnity =  mapper.Map<EventEntity>(@event);
-
             await context.Events.AddAsync(eventEnity);
-            await context.SaveChangesAsync();
         }
 
         public async Task<List<Event>> Get(string? searchName, string? searchPlace,

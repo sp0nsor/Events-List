@@ -8,15 +8,15 @@ namespace Events.Application.Services
 {
     public class RegistrationsService : IRegistrationsService
     {
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        private readonly IRegistrationsRepository registrationsRepository;
 
         public RegistrationsService(
-            IMapper mapper,
-            IRegistrationsRepository registrationsRepository)
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            this.registrationsRepository = registrationsRepository;
         }
 
         public async Task CreateRegistration(CreateRegistrationRequest request)
@@ -26,12 +26,13 @@ namespace Events.Application.Services
                 request.EventId,
                 request.ParticipantId);
 
-            await registrationsRepository.Create(registration);
+            await unitOfWork.Registrations.Create(registration);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteRegistration(Guid id)
         {
-            await registrationsRepository.Delete(id);
+            await unitOfWork.Registrations.Delete(id);
         }
     }
 }

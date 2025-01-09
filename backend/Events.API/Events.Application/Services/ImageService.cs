@@ -10,14 +10,7 @@ namespace Events.Application.Services
         private readonly string staticFilePath =
              Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles\\Images");
 
-        private readonly IImageRepository imageRepository;
-
-        public ImageService(IImageRepository imageRepository)
-        {
-            this.imageRepository = imageRepository;
-        }
-
-        public async Task<Image> CreateImage(IFormFile eventImage)
+        public async Task<Image> CreateImage(IFormFile eventImage, Guid eventId)
         {
             var fileName = Path.GetFileName(eventImage.FileName);
             var filePath = Path.Combine(staticFilePath, fileName);
@@ -27,7 +20,7 @@ namespace Events.Application.Services
                 await eventImage.CopyToAsync(stream);
             }
 
-            var image = Image.Create(Guid.NewGuid(), Guid.NewGuid(), filePath);
+            var image = Image.Create(Guid.NewGuid(), eventId, filePath);
 
             return image;
         }

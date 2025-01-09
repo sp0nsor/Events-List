@@ -10,26 +10,28 @@ namespace Events.Application.Services
 {
     public class EventsService : IEventsService
     {
-        private readonly IEventsRepository eventsRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IImageService imageService;
         private readonly IMapper mapper;
 
         public EventsService(
-            IEventsRepository eventsRepository,
+            IUnitOfWork unitOfWork,
             IImageService imageService,
             IMapper mapper)
         {
-            this.eventsRepository = eventsRepository;
+            this.unitOfWork = unitOfWork;
             this.imageService = imageService;
             this.mapper = mapper;
         }
 
         public async Task CreateEvent(CreateEventRequest request)
         {
-            var image = await imageService.CreateImage(request.Image);
+            var eventId = Guid.NewGuid();
+
+            var image = await imageService.CreateImage(request.Image, eventId);
 
             var @event = Event.Create(
-                image.EventId,
+                eventId,
                 request.Name,
                 request.Description,
                 request.Place,
@@ -38,12 +40,13 @@ namespace Events.Application.Services
                 request.MaxParticipantCount,
                 image);
 
-            await eventsRepository.Create(@event);
+            await unitOfWork.Events.Create(@event);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<List<GetEventResponse>> GetEvents(GetEventRequest request)
         {
-            var events = await eventsRepository.Get(request.SearchName, request.SearchPlace,
+            var events = await unitOfWork.Events.Get(request.SearchName, request.SearchPlace,
                 request.SearchCategory, request.SortItem, request.SortOrder);
 
             return mapper.Map<List<GetEventResponse>>(events);
@@ -51,27 +54,27 @@ namespace Events.Application.Services
 
         public async Task<List<GetParticipantResponse>> GetEventParticipants(Guid id)
         {
-            var participants = await eventsRepository.GetParticipants(id);
+            var participants = await unitOfWork.Events.GetParticipants(id);
 
             return mapper.Map<List<GetParticipantResponse>>(participants);
         }
 
         public async Task<GetEventResponse> GetEventById(Guid id)
         {
-            var @event = await eventsRepository.GetById(id);
+            var @event = await unitOfWork.Events.GetById(id);
 
             return mapper.Map<GetEventResponse>(@event);
         }
 
         public async Task UpdateEvent(Guid id, UpdateEventRequest request)
         {
-            await eventsRepository.Update(id, request.Name, request.Description,
+            await unitOfWork.Events.Update(id, request.Name, request.Description,
                 request.Place, request.Category, request.MaxParticipantCount, request.Time);
         }
 
         public async Task DeleteEvent(Guid id)
         {
-            await eventsRepository.Delete(id);
+            await unitOfWork.Events.Delete(id);
         }
     }
 }
