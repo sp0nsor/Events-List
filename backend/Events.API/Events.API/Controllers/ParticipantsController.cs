@@ -1,6 +1,7 @@
 ﻿using Events.Application.Interfaces;
 using Events.Application.Contracts.Participants;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 namespace Events.API.Controllers
 {
@@ -8,16 +9,26 @@ namespace Events.API.Controllers
     [Route("[controller]")]
     public class ParticipantsController : ControllerBase
     {
+        private readonly IValidator<CreateParticipantRequest> createParticipantValidator;
         private readonly IParticipantService participantService;
 
-        public ParticipantsController(IParticipantService participantService)
+        public ParticipantsController(
+            IValidator<CreateParticipantRequest> createParticipantValidator,
+            IParticipantService participantService)
         {
+            this.createParticipantValidator = createParticipantValidator;
             this.participantService = participantService;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateParticipant([FromBody] CreateParticipantRequest request)
         {
+            var validationResult = createParticipantValidator.Validate(request);
+            if(!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             await participantService.CreateParticipant(request);
 
             return Ok();

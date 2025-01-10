@@ -1,3 +1,4 @@
+using Events.API;
 using Events.API.Infrastructure;
 using Events.API.Middlewares;
 using Events.Application;
@@ -18,14 +19,12 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
-services.AddAutoMapper(typeof(DataBaseMappings));
-
 services
+    .AddApi()
     .AddDataAccess(configuration)
     .AddApplication();
 
 services.AddProblemDetails();
-services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 

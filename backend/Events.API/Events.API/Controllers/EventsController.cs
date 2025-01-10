@@ -1,5 +1,6 @@
 ﻿using Events.Application.Contracts.Events;
 using Events.Application.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers
@@ -8,18 +9,26 @@ namespace Events.API.Controllers
     [Route("[controller]")]
     public class EventsController : ControllerBase
     {
-        private readonly IImageService imageService;
+        private readonly IValidator<CreateEventRequest> createEventValidator;
         private readonly IEventsService eventsService;
 
-        public EventsController(IImageService imageService, IEventsService eventsService)
+        public EventsController(
+            IValidator<CreateEventRequest> createEventValidator,
+            IEventsService eventsService)
         {
-            this.imageService = imageService;
+            this.createEventValidator = createEventValidator;
             this.eventsService = eventsService;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateEvent([FromForm] CreateEventRequest request)
         {
+            var validationResult = createEventValidator.Validate(request);
+            if(!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             await eventsService.CreateEvent(request);
 
             return Ok();
