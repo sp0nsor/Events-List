@@ -1,86 +1,63 @@
-﻿using Events.Core.Models;
-using Events.Application.Interfaces;
-using Events.DataAccess.Interfaces;
-using Azure.Core;
-using Events.Application.Contracts.Events;
-using AutoMapper;
+﻿using Events.Application.Contracts.Events;
 using Events.Application.Contracts.Participants;
+using Events.Application.Interfaces.Services;
+using Events.Application.Interfaces.UseCases.Events;
 
 namespace Events.Application.Services
 {
     public class EventsService : IEventsService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IImageService imageService;
-        private readonly IMapper mapper;
+        private readonly ICreateEventUseCase createEventUseCase;
+        private readonly IGetEventsUseCase getEventsUseCase;
+        private readonly IGetEventParticipantsUseCase getEventParticipantsUseCase;
+        private readonly IGetEventByIdUseCase getEventByIdUseCase;
+        private readonly IUpdateEventUseCase updateEventUseCase;
+        private readonly IDeleteEventUseCase deleteEventUseCase;
 
         public EventsService(
-            IUnitOfWork unitOfWork,
-            IImageService imageService,
-            IMapper mapper)
+            ICreateEventUseCase createEventUseCase,
+            IGetEventsUseCase getEventsUseCase,
+            IGetEventParticipantsUseCase getEventParticipantsUseCase,
+            IGetEventByIdUseCase getEventByIdUseCase,
+            IUpdateEventUseCase updateEventUseCase,
+            IDeleteEventUseCase deleteEventUseCase)
         {
-            this.unitOfWork = unitOfWork;
-            this.imageService = imageService;
-            this.mapper = mapper;
+            this.createEventUseCase = createEventUseCase;
+            this.getEventsUseCase = getEventsUseCase;
+            this.getEventParticipantsUseCase = getEventParticipantsUseCase;
+            this.getEventByIdUseCase = getEventByIdUseCase;
+            this.updateEventUseCase = updateEventUseCase;
+            this.deleteEventUseCase = deleteEventUseCase;
         }
 
         public async Task CreateEvent(CreateEventRequest request)
         {
-            var eventId = Guid.NewGuid();
-
-            var image = await imageService.CreateImage(request.Image, eventId);
-
-            var @event = Event.Create(
-                eventId,
-                request.Name,
-                request.Description,
-                request.Place,
-                request.Time,
-                request.Category,
-                request.MaxParticipantCount,
-                image);
-
-            await unitOfWork.Events.Create(@event);
-            await unitOfWork.SaveChangesAsync();
+            await createEventUseCase.Execute(request);
         }
 
         public async Task<EventsPageResponse> GetEvents(GetEventRequest request)
         {
-            var eventsPage = await unitOfWork.Events.Get(
-                request.SearchName,
-                request.SearchPlace,
-                request.SearchCategory,
-                request.SortItem,
-                request.SortOrder,
-                request.Page,
-                request.PageSize);
-
-            return mapper.Map<EventsPageResponse>(eventsPage);
+            return await getEventsUseCase.Execute(request);
         }
 
         public async Task<List<GetParticipantResponse>> GetEventParticipants(Guid id)
         {
-            var participants = await unitOfWork.Events.GetParticipants(id);
-
-            return mapper.Map<List<GetParticipantResponse>>(participants);
+            return await getEventParticipantsUseCase.Execute(id);
         }
 
         public async Task<GetEventResponse> GetEventById(Guid id)
         {
-            var @event = await unitOfWork.Events.GetById(id);
-
-            return mapper.Map<GetEventResponse>(@event);
+            return await getEventByIdUseCase.Execute(id);
         }
 
         public async Task UpdateEvent(Guid id, UpdateEventRequest request)
         {
-            await unitOfWork.Events.Update(id, request.Name, request.Description,
-                request.Place, request.Category, request.MaxParticipantCount, request.Time);
+            await updateEventUseCase.Execute(id, request);
         }
 
         public async Task DeleteEvent(Guid id)
         {
-            await unitOfWork.Events.Delete(id);
+            await deleteEventUseCase.Execute(id);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Events.Core.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Events.Application.Interfaces
+namespace Events.Application.Interfaces.Services
 {
     public interface IImageService
     {

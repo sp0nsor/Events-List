@@ -1,7 +1,7 @@
 ﻿using Events.Application.Contracts.Registrations;
 using Events.Core.Models;
 
-namespace Events.Application.Interfaces
+namespace Events.Application.Interfaces.Services
 {
     public interface IRegistrationsService
     {

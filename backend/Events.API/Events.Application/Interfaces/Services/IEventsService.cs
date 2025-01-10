@@ -2,7 +2,7 @@
 using Events.Application.Contracts.Participants;
 using Events.Core.Models;
 
-namespace Events.Application.Interfaces
+namespace Events.Application.Interfaces.Services
 {
     public interface IEventsService
     {

@@ -1,4 +1,4 @@
-﻿using Events.Application.Interfaces;
+﻿using Events.Application.Interfaces.Services;
 using Events.Core.Models;
 using Events.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Http;

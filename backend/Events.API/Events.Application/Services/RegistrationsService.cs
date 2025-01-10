@@ -1,38 +1,30 @@
-﻿using AutoMapper;
-using Events.Application.Contracts.Registrations;
-using Events.Application.Interfaces;
-using Events.Core.Models;
-using Events.DataAccess.Interfaces;
+﻿using Events.Application.Contracts.Registrations;
+using Events.Application.Interfaces.Services;
+using Events.Application.Interfaces.UseCases.Registrations;
 
 namespace Events.Application.Services
 {
     public class RegistrationsService : IRegistrationsService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        private readonly ICreateRegistrationUseCase createRegistrationUseCase;
+        private readonly IDeleteRegistrationUseCase deleteRegistrationUseCase;
 
         public RegistrationsService(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            ICreateRegistrationUseCase createRegistrationUseCase,
+            IDeleteRegistrationUseCase deleteRegistrationUseCase)
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            this.createRegistrationUseCase = createRegistrationUseCase;
+            this.deleteRegistrationUseCase = deleteRegistrationUseCase;
         }
 
         public async Task CreateRegistration(CreateRegistrationRequest request)
         {
-            var registration = Registration.Create(
-                Guid.NewGuid(),
-                request.EventId,
-                request.ParticipantId);
-
-            await unitOfWork.Registrations.Create(registration);
-            await unitOfWork.SaveChangesAsync();
+            await createRegistrationUseCase.Execute(request);
         }
 
         public async Task DeleteRegistration(Guid id)
         {
-            await unitOfWork.Registrations.Delete(id);
+            await deleteRegistrationUseCase.Execute(id);
         }
     }
 }

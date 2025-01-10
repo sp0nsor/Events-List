@@ -1,54 +1,46 @@
-﻿using AutoMapper;
-using Events.Application.Contracts.Participants;
-using Events.Application.Interfaces;
-using Events.Core.Models;
-using Events.DataAccess.Interfaces;
+﻿using Events.Application.Contracts.Participants;
+using Events.Application.Interfaces.Services;
+using Events.Application.Interfaces.UseCases.Participants;
 
 namespace Events.Application.Services
 {
     public class ParticipantService : IParticipantService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        private readonly ICreateParticipantUseCase createParticipantUseCase;
+        private readonly IGetParticipantsUseCase getParticipantsUseCase;
+        private readonly IDeleteParticipantUseCase deleteParticipantUseCase;
+        private readonly IGetParticipantByIdUseCase getParticipantByIdUseCase;
 
         public ParticipantService(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            ICreateParticipantUseCase createParticipantUseCase,
+            IGetParticipantsUseCase getParticipantsUseCase,
+            IGetParticipantByIdUseCase getParticipantByIdUseCase,
+            IDeleteParticipantUseCase deleteParticipantUseCase)
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            this.getParticipantByIdUseCase = getParticipantByIdUseCase;
+            this.createParticipantUseCase = createParticipantUseCase;
+            this.getParticipantsUseCase = getParticipantsUseCase;
+            this.deleteParticipantUseCase = deleteParticipantUseCase;
         }
 
         public async Task CreateParticipant(CreateParticipantRequest request)
         {
-            var participant = Participant.Create(
-                Guid.NewGuid(),
-                request.FirstName,
-                request.LastName,
-                request.BirthDate,
-                request.Email);
-
-            await unitOfWork.Participants.Create(participant);
-            await unitOfWork.SaveChangesAsync();
+            await createParticipantUseCase.Execute(request);
         }
 
         public async Task<List<GetParticipantResponse>> GetPartcipants()
         {
-            var participants = await unitOfWork.Participants.Get();
-
-            return mapper.Map<List<GetParticipantResponse>>(participants);
-        }
-
-        public async Task<GetParticipantResponse> GetPartcipantById(Guid id)
-        {
-            var partcipant = await unitOfWork.Participants.GetById(id);
-
-            return mapper.Map<GetParticipantResponse>(partcipant);
+            return await getParticipantsUseCase.Execute();
         }
 
         public async Task DeleteParticipant(Guid id)
         {
-            await unitOfWork.Participants.Delete(id);
+            await deleteParticipantUseCase.Execute(id);
+        }
+
+        public async Task<GetParticipantResponse> GetPartcipantById(Guid id)
+        {
+            return await getParticipantByIdUseCase.Execute(id);
         }
     }
 }

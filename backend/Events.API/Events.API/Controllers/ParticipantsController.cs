@@ -1,7 +1,7 @@
-﻿using Events.Application.Interfaces;
-using Events.Application.Contracts.Participants;
+﻿using Events.Application.Contracts.Participants;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
+using Events.Application.Interfaces.Services;
 
 namespace Events.API.Controllers
 {

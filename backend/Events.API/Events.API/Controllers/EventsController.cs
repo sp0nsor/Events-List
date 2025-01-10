@@ -1,5 +1,5 @@
 ﻿using Events.Application.Contracts.Events;
-using Events.Application.Interfaces;
+using Events.Application.Interfaces.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
