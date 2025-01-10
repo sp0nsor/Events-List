@@ -24,15 +24,21 @@ namespace Events.DataAccess.Repositories
             await context.Events.AddAsync(eventEnity);
         }
 
-        public async Task<List<Event>> Get(string? searchName, string? searchPlace,
-            string? searchCategory, string? sortItem, string? sortOrder)
+        public async Task<PagedList<Event>> Get(
+            string? searchName,
+            string? searchPlace,
+            string? searchCategory,
+            string? sortItem,
+            string? sortOrder,
+            int page,
+            int pageSize)
         {
             var eventsQuery = context.Events
                 .Include(e => e.Image)
                 .AsNoTracking()
                 .Where(e =>
-                    (string.IsNullOrWhiteSpace(searchName) || e.Name.ToLower().Contains(searchName.ToLower())) ||
-                    (string.IsNullOrWhiteSpace(searchPlace) || e.Place.ToLower().Contains(searchPlace.ToLower())) ||
+                    (string.IsNullOrWhiteSpace(searchName) || e.Name.ToLower().Contains(searchName.ToLower())) &&
+                    (string.IsNullOrWhiteSpace(searchPlace) || e.Place.ToLower().Contains(searchPlace.ToLower())) &&
                     (string.IsNullOrWhiteSpace(searchCategory) || e.Category.ToLower().Contains(searchCategory.ToLower()))
                 );
 
@@ -47,12 +53,21 @@ namespace Events.DataAccess.Repositories
                 ? eventsQuery.OrderByDescending(selectorKey)
                 : eventsQuery.OrderBy(selectorKey);
 
+            var totalCount = await eventsQuery.CountAsync();
+
             var eventEntities = await eventsQuery
-                .Include(e => e.Image)
-                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            return mapper.Map<List<Event>>(eventEntities);
+            var events = mapper.Map<List<Event>>(eventEntities);
+
+            return PagedList<Event>.Create(
+                events,
+                totalCount,
+                page,
+                pageSize,
+                (int)Math.Ceiling((double)totalCount / pageSize));
         }
 
         public async Task<List<Participant>> GetParticipants(Guid eventId)

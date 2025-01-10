@@ -44,12 +44,18 @@ namespace Events.Application.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<List<GetEventResponse>> GetEvents(GetEventRequest request)
+        public async Task<EventsPageResponse> GetEvents(GetEventRequest request)
         {
-            var events = await unitOfWork.Events.Get(request.SearchName, request.SearchPlace,
-                request.SearchCategory, request.SortItem, request.SortOrder);
+            var eventsPage = await unitOfWork.Events.Get(
+                request.SearchName,
+                request.SearchPlace,
+                request.SearchCategory,
+                request.SortItem,
+                request.SortOrder,
+                request.Page,
+                request.PageSize);
 
-            return mapper.Map<List<GetEventResponse>>(events);
+            return mapper.Map<EventsPageResponse>(eventsPage);
         }
 
         public async Task<List<GetParticipantResponse>> GetEventParticipants(Guid id)

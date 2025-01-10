@@ -12,6 +12,7 @@ namespace Events.Application.Mappings
         {
             CreateMap<Event, GetEventResponse>();
             CreateMap<Image, GetImageResponse>();
+            CreateMap<PagedList<Event>, EventsPageResponse>();
             CreateMap<Participant, GetParticipantResponse>();
         }
     }

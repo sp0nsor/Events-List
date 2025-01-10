@@ -6,8 +6,14 @@ namespace Events.DataAccess.Interfaces
     {
         Task Create(Event Event);
         Task Delete(Guid id);
-        Task<List<Event>> Get(string? searchName, string? searchPlace,
-            string? searchCategory, string? sortItem, string? sortOrder);
+        Task<PagedList<Event>> Get(
+            string? searchName,
+            string? searchPlace,
+            string? searchCategory,
+            string? sortItem,
+            string? sortOrder,
+            int page,
+            int pageSize);
         Task<Event> GetById(Guid id);
         Task Update(Guid id, string name, string description, string place,
             string category, int maxParticipantCount, DateTime time);
