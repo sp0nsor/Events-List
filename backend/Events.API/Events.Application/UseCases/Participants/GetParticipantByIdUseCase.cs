@@ -20,7 +20,7 @@ namespace Events.Application.UseCases.Participants
 
         public async Task<GetParticipantResponse> Execute(Guid id)
         {
-            var participant = unitOfWork.Participants.GetById(id);
+            var participant = await unitOfWork.Participants.GetById(id);
 
             return mapper.Map<GetParticipantResponse>(participant);
         }

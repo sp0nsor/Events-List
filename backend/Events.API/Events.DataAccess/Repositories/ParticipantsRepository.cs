@@ -41,9 +41,15 @@ namespace Events.DataAccess.Repositories
 
         public async Task Delete(Guid id)
         {
-            await context.Participants
-                .Where(p => p.Id == id)
-                .ExecuteDeleteAsync();
+            var participant = await context.Participants
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (participant == null)
+            {
+                throw new InvalidOperationException($"Participant with Id {id} not found.");
+            }
+
+            context.Participants.Remove(participant);
         }
     }
 }

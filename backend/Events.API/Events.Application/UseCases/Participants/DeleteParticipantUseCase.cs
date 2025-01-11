@@ -15,6 +15,7 @@ namespace Events.Application.UseCases.Participants
         public async Task Execute(Guid id)
         {
             await unitOfWork.Participants.Delete(id);
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }
