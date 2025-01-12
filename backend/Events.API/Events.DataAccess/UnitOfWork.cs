@@ -12,6 +12,7 @@ namespace Events.DataAccess
         private EventsRepository eventsRepository;
         private ParticipantsRepository participantsRepository;
         private RegistrationsRepository registrationsRepository;
+        private UsersRepository usersRepository;
 
         public UnitOfWork(EventsDbContext context, IMapper mapper)
         {
@@ -27,6 +28,9 @@ namespace Events.DataAccess
 
         public IRegistrationsRepository Registrations =>
             registrationsRepository ??= new RegistrationsRepository(context, mapper);
+
+        public IUsersRepository Users => 
+            usersRepository ??= new UsersRepository(context, mapper);
 
         public async Task<int> SaveChangesAsync()
         {

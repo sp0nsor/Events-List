@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Events.DataAccess.Configurations
 {
-    public class ImageEntityConfiguration : IEntityTypeConfiguration<ImageEntity>
+    public class ImageEntityConfiguration
+        : IEntityTypeConfiguration<ImageEntity>
     {
         public void Configure(EntityTypeBuilder<ImageEntity> builder)
         {

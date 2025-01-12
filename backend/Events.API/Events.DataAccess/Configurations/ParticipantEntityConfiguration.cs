@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Events.DataAccess.Configurations
 {
-    public class ParticipantEntityConfiguration : IEntityTypeConfiguration<ParticipantEntity>
+    public class ParticipantEntityConfiguration
+        : IEntityTypeConfiguration<ParticipantEntity>
     {
         public void Configure(EntityTypeBuilder<ParticipantEntity> builder)
         {
