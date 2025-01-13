@@ -2,9 +2,11 @@
 using Events.Core.Models;
 using Events.DataAccess;
 using Events.DataAccess.Entities;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 using Events.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Events.Tests.Tests.Repositories
 {
@@ -14,8 +16,10 @@ namespace Events.Tests.Tests.Repositories
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
 
-        public ParticipantRepositoryTests()
+        public ParticipantRepositoryTests(IOptions<AuthorizationOptions> authOptions)
         {
+            TestConfig.Initialize(authOptions);
+
             context = TestConfig.GetDbContext();
             mapper = TestConfig.GetMapper();
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 using Events.DataAccess.Repositories;
 
 namespace Events.DataAccess

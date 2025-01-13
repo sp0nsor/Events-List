@@ -1,7 +1,7 @@
 ﻿using Events.Core.Enums;
 using Events.Core.Models;
 
-namespace Events.DataAccess.Interfaces
+namespace Events.DataAccess.Interfaces.Repositories
 {
     public interface IUsersRepository
     {

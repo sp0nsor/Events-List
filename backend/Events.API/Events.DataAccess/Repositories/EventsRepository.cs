@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Events.Core.Models;
-using Events.DataAccess.Interfaces;
 using Events.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.DataAccess.Repositories
 {

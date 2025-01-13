@@ -2,7 +2,7 @@
 using Events.Application.Interfaces.Services;
 using Events.Application.Interfaces.UseCases.Events;
 using Events.Core.Models;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.UseCases.Events
 {

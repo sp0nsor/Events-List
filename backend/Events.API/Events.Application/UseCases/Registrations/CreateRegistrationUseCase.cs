@@ -1,7 +1,7 @@
 ﻿using Events.Application.Contracts.Registrations;
 using Events.Application.Interfaces.UseCases.Registrations;
 using Events.Core.Models;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.UseCases.Registrations
 {

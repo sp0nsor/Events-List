@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Events.Application.Contracts.Events;
 using Events.Application.Interfaces.UseCases.Events;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.UseCases.Events
 {

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events.DataAccess", "Events
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events.Application", "Events.Application\Events.Application.csproj", "{A1B5F1B8-0D3C-480A-A88D-1F9A57FDFDBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Tests", "Events.Tests\Events.Tests.csproj", "{EBE23C78-85CD-4058-ADC8-1163B8025A22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events.Infrastructure", "Events.Infrastructure\Events.Infrastructure.csproj", "{178C89EB-BE3F-4756-94A2-71D90FFFF52D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{A1B5F1B8-0D3C-480A-A88D-1F9A57FDFDBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B5F1B8-0D3C-480A-A88D-1F9A57FDFDBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B5F1B8-0D3C-480A-A88D-1F9A57FDFDBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBE23C78-85CD-4058-ADC8-1163B8025A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBE23C78-85CD-4058-ADC8-1163B8025A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBE23C78-85CD-4058-ADC8-1163B8025A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBE23C78-85CD-4058-ADC8-1163B8025A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{178C89EB-BE3F-4756-94A2-71D90FFFF52D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{178C89EB-BE3F-4756-94A2-71D90FFFF52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{178C89EB-BE3F-4756-94A2-71D90FFFF52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{178C89EB-BE3F-4756-94A2-71D90FFFF52D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

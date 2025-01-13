@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Events.Application.Contracts.Participants;
 using Events.Application.Interfaces.UseCases.Participants;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.UseCases.Participants
 {

@@ -1,5 +1,5 @@
 ﻿using Events.Application.Interfaces.UseCases.Registrations;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.UseCases.Registrations
 {

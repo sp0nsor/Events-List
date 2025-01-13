@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Events.Core.Models;
 using Events.DataAccess.Entities;
-using Events.DataAccess.Interfaces;
+using Events.DataAccess.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Events.DataAccess.Repositories
