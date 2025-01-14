@@ -1,9 +1,9 @@
-﻿using Events.Application.Contracts.Events;
+﻿using Events.Application.Comands.Events.CreateEvent;
 using FluentValidation;
 
 namespace Events.API.Validators
 {
-    public class CreateEventValidator : AbstractValidator<CreateEventRequest>
+    public class CreateEventValidator : AbstractValidator<CreateEventCommand>
     {
         public CreateEventValidator()
         {
@@ -22,7 +22,7 @@ namespace Events.API.Validators
             RuleFor(x => x.MaxParticipantCount)
                 .GreaterThan(0).WithMessage("MaxParticipantCount must be greater than 0.");
 
-            RuleFor(x => x.Time)
+            RuleFor(x => x.Date)
                 .NotEmpty().WithMessage("Time is required.")
                 .Must(BeAValidDate).WithMessage("Time must be a valid date.");
 

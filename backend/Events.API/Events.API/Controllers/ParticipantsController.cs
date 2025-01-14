@@ -1,7 +1,9 @@
-﻿using Events.Application.Contracts.Participants;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
-using Events.Application.Interfaces.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
+using Events.Application.Comands.Participants.CreateParticipant;
+using Events.Application.Comands.Participants.GetParticipants;
+using Events.Application.Comands.Participants.GetParticipantById;
+using Events.Application.Comands.Participants.DeleteParticipant;
 
 namespace Events.API.Controllers
 {
@@ -9,51 +11,41 @@ namespace Events.API.Controllers
     [Route("[controller]")]
     public class ParticipantsController : ControllerBase
     {
-        private readonly IValidator<CreateParticipantRequest> createParticipantValidator;
-        private readonly IParticipantsService participantService;
+        private readonly IMediator mediator;
 
-        public ParticipantsController(
-            IValidator<CreateParticipantRequest> createParticipantValidator,
-            IParticipantsService participantService)
+        public ParticipantsController(IMediator mediator)
         {
-            this.createParticipantValidator = createParticipantValidator;
-            this.participantService = participantService;
+            this.mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateParticipant([FromBody] CreateParticipantRequest request)
+        public async Task<ActionResult> CreateParticipant([FromBody] CreateParticipantCommand command)
         {
-            var validationResult = createParticipantValidator.Validate(request);
-            if(!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-
-            await participantService.CreateParticipant(request);
+            await mediator.Send(command);
 
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetParticipants()
+        public async Task<ActionResult> GetParticipants([FromQuery] GetParticipantsCommand command)
         {
-            var response = await participantService.GetPartcipants();
+            var response = await mediator.Send(command);
 
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetParticipantById([FromRoute] Guid id)
+        [HttpGet("id")]
+        public async Task<ActionResult> GetParticipantById([FromQuery] GetParticipantByIdCommand command)
         {
-            var response = await participantService.GetPartcipantById(id);
+            var response = await mediator.Send(command);
 
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteParticipant([FromRoute] Guid id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteParticipant([FromQuery] DeleteParticipantCommand command)
         {
-            await participantService.DeleteParticipant(id);
+            await mediator.Send(command);
 
             return Ok();
         }

@@ -1,6 +1,10 @@
-﻿using Events.Application.Contracts.Events;
-using Events.Application.Interfaces.Services;
-using FluentValidation;
+﻿using Events.Application.Comands.Events.CreateEvent;
+using Events.Application.Comands.Events.DeleteEvent;
+using Events.Application.Comands.Events.GetEventById;
+using Events.Application.Comands.Events.GetEventParticipants;
+using Events.Application.Comands.Events.GetEvents;
+using Events.Application.Comands.Events.UpdateEvent;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers
@@ -9,57 +13,58 @@ namespace Events.API.Controllers
     [Route("[controller]")]
     public class EventsController : ControllerBase
     {
-        private readonly IValidator<CreateEventRequest> createEventValidator;
-        private readonly IEventsService eventsService;
+        private readonly IMediator mediator;
 
-        public EventsController(
-            IValidator<CreateEventRequest> createEventValidator,
-            IEventsService eventsService)
+        public EventsController(IMediator mediator)
         {
-            this.createEventValidator = createEventValidator;
-            this.eventsService = eventsService;
+            this.mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateEvent([FromForm] CreateEventRequest request)
+        public async Task<ActionResult> CreateEvent([FromForm] CreateEventCommand command)
         {
-            var validationResult = createEventValidator.Validate(request);
-            if(!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-
+            await mediator.Send(command);
 
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetEvents([FromQuery] GetEventRequest request)
+        public async Task<ActionResult> GetEvents([FromQuery] GetEventsCommand command)
         {
-            return Ok();
+            var response = await mediator.Send(command);
+
+            return Ok(response);
         }
 
         [HttpGet("Participants")]
-        public async Task<ActionResult> GetEventParticipants([FromQuery] Guid id)
+        public async Task<ActionResult> GetEventParticipants([FromQuery] GetEventParticipantsCommand command)
         {
+            var response = await mediator.Send(command);
+
+            return Ok(response);
+        }
+
+        [HttpGet("id")]
+        public async Task<ActionResult> GetEventById([FromQuery] GetEventByIdCommand command)
+        {
+            var response = await mediator.Send(command);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateEvent([FromBody] UpdateEventCommand command)
+        {
+            await mediator.Send(command);
+
             return Ok();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetEventById([FromRoute] Guid id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteEvent([FromQuery] DeleteEventCommand command)
         {
-            return Ok();
-        }
+            await mediator.Send(command);
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateEvent([FromRoute] Guid id, [FromBody] UpdateEventRequest request)
-        {
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteEvent([FromRoute] Guid id)
-        {
             return Ok();
         }
     }

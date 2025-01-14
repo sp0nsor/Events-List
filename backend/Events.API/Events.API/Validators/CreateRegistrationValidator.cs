@@ -1,9 +1,9 @@
-﻿using Events.Application.Contracts.Registrations;
+﻿using Events.Application.Comands.Registrations.CreateRegistration;
 using FluentValidation;
 
 namespace Events.API.Validators
 {
-    public class CreateRegistrationValidator : AbstractValidator<CreateRegistrationRequest>
+    public class CreateRegistrationValidator : AbstractValidator<CreateRegistrationCommand>
     {
         public CreateRegistrationValidator()
         {

@@ -1,8 +1,8 @@
 ﻿using Events.API.Infrastructure;
 using Events.API.Validators;
-using Events.Application.Contracts.Events;
-using Events.Application.Contracts.Participants;
-using Events.Application.Contracts.Registrations;
+using Events.Application.Comands.Events.CreateEvent;
+using Events.Application.Comands.Participants.CreateParticipant;
+using Events.Application.Comands.Registrations.CreateRegistration;
 using FluentValidation;
 
 namespace Events.API
@@ -13,9 +13,9 @@ namespace Events.API
         {
             services.AddExceptionHandler<GlobalExceptionHandler>();
 
-            services.AddScoped<IValidator<CreateEventRequest>, CreateEventValidator>();
-            services.AddScoped<IValidator<CreateParticipantRequest>, CreateParticipantValidator>();
-            services.AddScoped<IValidator<CreateRegistrationRequest>, CreateRegistrationValidator>();
+            services.AddScoped<IValidator<CreateEventCommand>, CreateEventValidator>();
+            services.AddScoped<IValidator<CreateParticipantCommand>, CreateParticipantValidator>();
+            services.AddScoped<IValidator<CreateRegistrationCommand>, CreateRegistrationValidator>();
 
             return services;
         }

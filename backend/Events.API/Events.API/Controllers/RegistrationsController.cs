@@ -1,8 +1,7 @@
-﻿using Events.Application.Contracts.Registrations;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
-using Events.API.Validators;
-using Events.Application.Interfaces.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
+using Events.Application.Comands.Registrations.CreateRegistration;
+using Events.Application.Comands.Registrations.DeleteRegistration;
 
 namespace Events.API.Controllers
 {
@@ -10,34 +9,25 @@ namespace Events.API.Controllers
     [Route("[controller]")]
     public class RegistrationsController : ControllerBase
     {
-        private readonly IValidator<CreateRegistrationRequest> createRegistrationValidator;
-        private readonly IRegistrationsService registrationsService;
+        private readonly IMediator mediator;
 
-        public RegistrationsController(
-            IValidator<CreateRegistrationRequest> createRegistrationValidator,
-            IRegistrationsService registrationsService)
+        public RegistrationsController(IMediator mediator)
         {
-            this.createRegistrationValidator = createRegistrationValidator;
-            this.registrationsService = registrationsService;
+            this.mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateRegistration([FromBody] CreateRegistrationRequest request)
+        public async Task<ActionResult> CreateRegistration([FromBody] CreateRegistrationCommand command)
         {
-            var validationResult = createRegistrationValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-            await registrationsService.CreateRegistration(request);
+            await mediator.Send(command);
 
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteRegistration([FromRoute] Guid id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteRegistration([FromQuery] DeleteRegistrationCommand command)
         {
-            await registrationsService.DeleteRegistration(id);
+            await mediator.Send(command);
 
             return Ok();
         }

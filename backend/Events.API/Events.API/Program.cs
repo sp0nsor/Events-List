@@ -5,6 +5,7 @@ using Events.Application;
 using Events.DataAccess;
 using Events.DataAccess.Mappings;
 using Serilog;
+using System.Reflection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,14 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 services.Configure<AuthorizationOptions>(configuration.GetSection(nameof(AuthorizationOptions)));
+
+var assemblies = new[]
+{
+    Assembly.Load("Events.Application")
+};
+
+services.AddMediatR(x =>
+    x.RegisterServicesFromAssemblies(assemblies));
 
 services
     .AddApi()

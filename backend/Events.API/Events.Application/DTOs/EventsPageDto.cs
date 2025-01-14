@@ -5,5 +5,5 @@
         int TotalCount,
         int CurrentPage,
         int PageSize,
-        int TotalPages);
+        int TotalPage);
 }
