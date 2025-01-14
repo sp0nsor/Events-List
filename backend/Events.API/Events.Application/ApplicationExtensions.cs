@@ -19,7 +19,7 @@ namespace Events.Application
 
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEventsService, EventsService>();
-            services.AddScoped<IParticipantService, ParticipantService>();
+            services.AddScoped<IParticipantsService, ParticipantService>();
             services.AddScoped<IRegistrationsService, RegistrationsService>();
 
             services.AddScoped<ICreateParticipantUseCase, CreateParticipantUseCase>();

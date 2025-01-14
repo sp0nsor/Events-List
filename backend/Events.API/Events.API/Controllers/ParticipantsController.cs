@@ -10,11 +10,11 @@ namespace Events.API.Controllers
     public class ParticipantsController : ControllerBase
     {
         private readonly IValidator<CreateParticipantRequest> createParticipantValidator;
-        private readonly IParticipantService participantService;
+        private readonly IParticipantsService participantService;
 
         public ParticipantsController(
             IValidator<CreateParticipantRequest> createParticipantValidator,
-            IParticipantService participantService)
+            IParticipantsService participantService)
         {
             this.createParticipantValidator = createParticipantValidator;
             this.participantService = participantService;

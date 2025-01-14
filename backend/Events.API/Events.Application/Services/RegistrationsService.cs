@@ -1,30 +1,32 @@
-﻿using Events.Application.Contracts.Registrations;
-using Events.Application.Interfaces.Services;
-using Events.Application.Interfaces.UseCases.Registrations;
+﻿using Events.Application.Interfaces.Services;
+using Events.Core.Models;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.Services
 {
     public class RegistrationsService : IRegistrationsService
     {
-        private readonly ICreateRegistrationUseCase createRegistrationUseCase;
-        private readonly IDeleteRegistrationUseCase deleteRegistrationUseCase;
+        private readonly IUnitOfWork unitOfWork;
 
-        public RegistrationsService(
-            ICreateRegistrationUseCase createRegistrationUseCase,
-            IDeleteRegistrationUseCase deleteRegistrationUseCase)
+        public RegistrationsService(IUnitOfWork unitOfWork)
         {
-            this.createRegistrationUseCase = createRegistrationUseCase;
-            this.deleteRegistrationUseCase = deleteRegistrationUseCase;
+            this.unitOfWork = unitOfWork;
         }
 
-        public async Task CreateRegistration(CreateRegistrationRequest request)
+        public async Task DeleteRegistrationAsync(Guid registrationId)
         {
-            await createRegistrationUseCase.Execute(request);
+            await unitOfWork.Registrations.Delete(registrationId);
         }
 
-        public async Task DeleteRegistration(Guid id)
+        public async Task CreateRegistrationAsync(Guid eventId, Guid participantId)
         {
-            await deleteRegistrationUseCase.Execute(id);
+            var registration = Registration.Create(
+                Guid.NewGuid(),
+                eventId,
+                participantId);
+
+            await unitOfWork.Registrations.Create(registration);
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

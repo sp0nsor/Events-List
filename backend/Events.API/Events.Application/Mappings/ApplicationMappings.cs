@@ -21,6 +21,7 @@ namespace Events.Application.Mappings
             CreateMap<Event, EventDto>();
             CreateMap<Image, ImageDto>();
             CreateMap<Participant, ParticipantDto>();
+            CreateMap<PagedList<Event>, EventsPageDto>(); 
         }
     }
 }

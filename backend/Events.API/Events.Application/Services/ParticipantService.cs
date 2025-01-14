@@ -1,46 +1,59 @@
-﻿using Events.Application.Contracts.Participants;
+﻿using AutoMapper;
+using Events.Application.DTOs;
 using Events.Application.Interfaces.Services;
-using Events.Application.Interfaces.UseCases.Participants;
+using Events.Core.Models;
+using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.Services
 {
-    public class ParticipantService : IParticipantService
+    public class ParticipantService : IParticipantsService
     {
-        private readonly ICreateParticipantUseCase createParticipantUseCase;
-        private readonly IGetParticipantsUseCase getParticipantsUseCase;
-        private readonly IDeleteParticipantUseCase deleteParticipantUseCase;
-        private readonly IGetParticipantByIdUseCase getParticipantByIdUseCase;
+        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
 
         public ParticipantService(
-            ICreateParticipantUseCase createParticipantUseCase,
-            IGetParticipantsUseCase getParticipantsUseCase,
-            IGetParticipantByIdUseCase getParticipantByIdUseCase,
-            IDeleteParticipantUseCase deleteParticipantUseCase)
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
-            this.getParticipantByIdUseCase = getParticipantByIdUseCase;
-            this.createParticipantUseCase = createParticipantUseCase;
-            this.getParticipantsUseCase = getParticipantsUseCase;
-            this.deleteParticipantUseCase = deleteParticipantUseCase;
+            this.mapper = mapper;
+            this.unitOfWork = unitOfWork;
         }
 
-        public async Task CreateParticipant(CreateParticipantRequest request)
+        public async Task CreateParticipantAsync(
+            string firstName,
+            string lastName,
+            DateTime birthDate,
+            string email)
         {
-            await createParticipantUseCase.Execute(request);
+            var participant = Participant.Create(
+                Guid.NewGuid(),
+                firstName,
+                lastName,
+                birthDate,
+                email);
+
+            await unitOfWork.Participants.Create(participant);
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<List<GetParticipantResponse>> GetPartcipants()
+        public async Task DeleteParticipantAsync(Guid participantId)
         {
-            return await getParticipantsUseCase.Execute();
+            await unitOfWork.Participants.Delete(participantId);
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteParticipant(Guid id)
+        public async Task<List<ParticipantDto>> GetParticipantsAsync()
         {
-            await deleteParticipantUseCase.Execute(id);
+            var participants = await unitOfWork.Participants.Get();
+
+            return mapper.Map<List<ParticipantDto>>(participants);
         }
 
-        public async Task<GetParticipantResponse> GetPartcipantById(Guid id)
+        public async Task<ParticipantDto?> GetParticipantByIdAsync(Guid participantId)
         {
-            return await getParticipantByIdUseCase.Execute(id);
+            var participant = await unitOfWork.Participants.GetById(participantId);
+
+            return mapper.Map<ParticipantDto?>(participant);
         }
     }
 }
