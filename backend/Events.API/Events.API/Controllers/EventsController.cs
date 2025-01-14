@@ -29,7 +29,6 @@ namespace Events.API.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            await eventsService.CreateEvent(request);
 
             return Ok();
         }
@@ -37,40 +36,30 @@ namespace Events.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetEvents([FromQuery] GetEventRequest request)
         {
-            var response = await eventsService.GetEvents(request);
-
-            return Ok(response);
+            return Ok();
         }
 
         [HttpGet("Participants")]
         public async Task<ActionResult> GetEventParticipants([FromQuery] Guid id)
         {
-            var response = await eventsService.GetEventParticipants(id);
-
-            return Ok(response);
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEventById([FromRoute] Guid id)
         {
-            var response = await eventsService.GetEventById(id);
-
-            return Ok(response);
+            return Ok();
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateEvent([FromRoute] Guid id, [FromBody] UpdateEventRequest request)
         {
-            await eventsService.UpdateEvent(id, request);
-
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEvent([FromRoute] Guid id)
         {
-            await eventsService.DeleteEvent(id);
-
             return Ok();
         }
     }

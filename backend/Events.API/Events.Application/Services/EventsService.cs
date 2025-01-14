@@ -1,63 +1,115 @@
-﻿using Events.Application.Contracts.Events;
-using Events.Application.Contracts.Participants;
+﻿using AutoMapper;
+using Events.Application.DTOs;
 using Events.Application.Interfaces.Services;
-using Events.Application.Interfaces.UseCases.Events;
+using Events.Core.Models;
+using Events.DataAccess.Interfaces.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace Events.Application.Services
 {
     public class EventsService : IEventsService
     {
-        private readonly ICreateEventUseCase createEventUseCase;
-        private readonly IGetEventsUseCase getEventsUseCase;
-        private readonly IGetEventParticipantsUseCase getEventParticipantsUseCase;
-        private readonly IGetEventByIdUseCase getEventByIdUseCase;
-        private readonly IUpdateEventUseCase updateEventUseCase;
-        private readonly IDeleteEventUseCase deleteEventUseCase;
+        private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IImageService imageService;
 
         public EventsService(
-            ICreateEventUseCase createEventUseCase,
-            IGetEventsUseCase getEventsUseCase,
-            IGetEventParticipantsUseCase getEventParticipantsUseCase,
-            IGetEventByIdUseCase getEventByIdUseCase,
-            IUpdateEventUseCase updateEventUseCase,
-            IDeleteEventUseCase deleteEventUseCase)
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
+            IImageService imageService)
         {
-            this.createEventUseCase = createEventUseCase;
-            this.getEventsUseCase = getEventsUseCase;
-            this.getEventParticipantsUseCase = getEventParticipantsUseCase;
-            this.getEventByIdUseCase = getEventByIdUseCase;
-            this.updateEventUseCase = updateEventUseCase;
-            this.deleteEventUseCase = deleteEventUseCase;
+            this.mapper = mapper;
+            this.unitOfWork = unitOfWork;
+            this.imageService = imageService;
         }
 
-        public async Task CreateEvent(CreateEventRequest request)
+        public async Task CreateEventAsync(
+            string name,
+            string description,
+            string place,
+            string category,
+            int maxParticipantCount,
+            DateTime date,
+            IFormFile imageFile)
         {
-            await createEventUseCase.Execute(request);
+            var eventId = Guid.NewGuid();
+
+            var image = await imageService.CreateImage(imageFile, eventId);
+
+            var @event = Event.Create(
+                eventId,
+                name,
+                description,
+                place,
+                date,
+                category,
+                maxParticipantCount,
+                image);
+
+            await unitOfWork.Events.Create(@event);
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<EventsPageResponse> GetEvents(GetEventRequest request)
+        public async Task DeleteEventAsync(Guid eventId)
         {
-            return await getEventsUseCase.Execute(request);
+            await unitOfWork.Events.Delete(eventId);
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<List<GetParticipantResponse>> GetEventParticipants(Guid id)
+        public async Task<EventDto?> GetEventByIdAsync(Guid id)
         {
-            return await getEventParticipantsUseCase.Execute(id);
+            var @event = await unitOfWork.Events.GetById(id);
+
+            return mapper.Map<EventDto?>(@event);
         }
 
-        public async Task<GetEventResponse> GetEventById(Guid id)
+        public async Task<EventsPageDto> GetEventsAsync(
+            string? searchName,
+            string? searchPlace,
+            string? searchCategory,
+            string? sortItem,
+            string? sortOrder,
+            int page = 1,
+            int pageSize = 10)
         {
-            return await getEventByIdUseCase.Execute(id);
+            var eventsPage = await unitOfWork.Events.Get(
+                searchName,
+                searchPlace,
+                searchCategory,
+                sortItem,
+                sortOrder,
+                page,
+                pageSize);
+
+            return mapper.Map<EventsPageDto>(eventsPage);
         }
 
-        public async Task UpdateEvent(Guid id, UpdateEventRequest request)
+        public async Task UpdateEventAync(
+            Guid id,
+            string name,
+            string description,
+            string palce,
+            string category,
+            int maxParticipantCount,
+            DateTime date)
         {
-            await updateEventUseCase.Execute(id, request);
+            await unitOfWork.Events.Update(
+                id,
+                name,
+                description,
+                palce,
+                category,
+                maxParticipantCount,
+                date);
+
+            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteEvent(Guid id)
+        public async Task<List<ParticipantDto>> GetEventParticipantsAsync(Guid eventId)
         {
-            await deleteEventUseCase.Execute(id);
+            var participants = await unitOfWork.Events.GetParticipants(eventId);
+
+            return mapper.Map<List<ParticipantDto>>(participants);
         }
     }
 }

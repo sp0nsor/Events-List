@@ -2,6 +2,7 @@
 using Events.Application.Contracts.Events;
 using Events.Application.Contracts.Images;
 using Events.Application.Contracts.Participants;
+using Events.Application.DTOs;
 using Events.Core.Models;
 
 namespace Events.Application.Mappings
@@ -14,6 +15,12 @@ namespace Events.Application.Mappings
             CreateMap<Image, GetImageResponse>();
             CreateMap<PagedList<Event>, EventsPageResponse>();
             CreateMap<Participant, GetParticipantResponse>();
+
+
+
+            CreateMap<Event, EventDto>();
+            CreateMap<Image, ImageDto>();
+            CreateMap<Participant, ParticipantDto>();
         }
     }
 }

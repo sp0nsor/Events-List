@@ -88,7 +88,7 @@ namespace Events.DataAccess.Repositories
             var eventEntity = await context.Events
                 .Include(e => e.Image)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Event not found");
+                .FirstOrDefaultAsync(e => e.Id == id);
 
             return mapper.Map<Event>(eventEntity);
         }
