@@ -26,7 +26,7 @@ namespace Events.DataAccess.Configurations
         private RolePermissionEntity[] ParseRolePermisions()
         {
             return authorization.RolePermissions
-                .SelectMany(rp => rp.Permissions
+                .SelectMany(rp => rp.Permission
                     .Select(p => new RolePermissionEntity()
                     {
                         RoleId = (int)Enum.Parse<Role>(rp.Role),

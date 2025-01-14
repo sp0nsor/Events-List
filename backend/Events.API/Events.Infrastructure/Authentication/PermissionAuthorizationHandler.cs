@@ -29,7 +29,7 @@ namespace Events.Infrastructure.Authentication
             using var scope = scopeFactory.CreateScope();
 
             var permissionService = scope.ServiceProvider
-                .GetRequiredService<IPermissionService>();
+                .GetRequiredService<IPermissionsService>();
 
             var permissions = await permissionService.GetPermissionsAsync(id);
 

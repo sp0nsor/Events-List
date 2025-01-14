@@ -4,11 +4,11 @@ using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.Services
 {
-    public class PermissionService : IPermissionService
+    public class PermissionsService : IPermissionsService
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public PermissionService(IUnitOfWork unitOfWork)
+        public PermissionsService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }

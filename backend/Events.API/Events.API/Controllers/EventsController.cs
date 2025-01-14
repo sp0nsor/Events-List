@@ -5,6 +5,7 @@ using Events.Application.Comands.Events.GetEventParticipants;
 using Events.Application.Comands.Events.GetEvents;
 using Events.Application.Comands.Events.UpdateEvent;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Events.API.Controllers
@@ -21,6 +22,7 @@ namespace Events.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> CreateEvent([FromForm] CreateEventCommand command)
         {
             await mediator.Send(command);
@@ -29,6 +31,7 @@ namespace Events.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> GetEvents([FromQuery] GetEventsCommand command)
         {
             var response = await mediator.Send(command);
@@ -37,6 +40,7 @@ namespace Events.API.Controllers
         }
 
         [HttpGet("Participants")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> GetEventParticipants([FromQuery] GetEventParticipantsCommand command)
         {
             var response = await mediator.Send(command);
@@ -45,6 +49,7 @@ namespace Events.API.Controllers
         }
 
         [HttpGet("id")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> GetEventById([FromQuery] GetEventByIdCommand command)
         {
             var response = await mediator.Send(command);
@@ -53,6 +58,7 @@ namespace Events.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> UpdateEvent([FromBody] UpdateEventCommand command)
         {
             await mediator.Send(command);
@@ -61,6 +67,7 @@ namespace Events.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> DeleteEvent([FromQuery] DeleteEventCommand command)
         {
             await mediator.Send(command);

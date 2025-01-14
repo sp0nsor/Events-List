@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Events.Application\Events.Application.csproj" />
     <ProjectReference Include="..\Events.DataAccess\Events.DataAccess.csproj" />
+    <ProjectReference Include="..\Events.Infrastructure\Events.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

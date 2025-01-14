@@ -2,6 +2,7 @@
 using MediatR;
 using Events.Application.Comands.Registrations.CreateRegistration;
 using Events.Application.Comands.Registrations.DeleteRegistration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Events.API.Controllers
 {
@@ -17,6 +18,7 @@ namespace Events.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> CreateRegistration([FromBody] CreateRegistrationCommand command)
         {
             await mediator.Send(command);
@@ -25,6 +27,7 @@ namespace Events.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> DeleteRegistration([FromQuery] DeleteRegistrationCommand command)
         {
             await mediator.Send(command);

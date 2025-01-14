@@ -6,12 +6,12 @@ using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.Services
 {
-    public class ParticipantService : IParticipantsService
+    public class ParticipantsService : IParticipantsService
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
 
-        public ParticipantService(
+        public ParticipantsService(
             IMapper mapper,
             IUnitOfWork unitOfWork)
         {

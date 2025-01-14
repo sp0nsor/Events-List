@@ -11,9 +11,12 @@ namespace Events.Application
         {
             services.AddAutoMapper(typeof(ApplicationMappings));
 
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IPermissionsService, PermissionsService>();
+
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEventsService, EventsService>();
-            services.AddScoped<IParticipantsService, ParticipantService>();
+            services.AddScoped<IParticipantsService, ParticipantsService>();
             services.AddScoped<IRegistrationsService, RegistrationsService>();
 
             return services;

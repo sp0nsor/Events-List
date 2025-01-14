@@ -2,7 +2,7 @@
 
 namespace Events.Application.Interfaces.Services
 {
-    public interface IPermissionService
+    public interface IPermissionsService
     {
         Task<HashSet<Permission>> GetPermissionsAsync(Guid userId);
     }
