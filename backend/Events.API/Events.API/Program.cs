@@ -5,8 +5,6 @@ using Events.DataAccess;
 using Events.Infrastructure;
 using Events.Infrastructure.Authentication;
 using Serilog;
-using System.Reflection;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
