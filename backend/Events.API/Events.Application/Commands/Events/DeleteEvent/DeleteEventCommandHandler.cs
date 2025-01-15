@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Events.Application.Comands.Events.DeleteEvent
 {
-    public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
+    public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand, Guid>
     {
         private readonly IEventsService eventsService;
 
@@ -12,9 +12,9 @@ namespace Events.Application.Comands.Events.DeleteEvent
             this.eventsService = eventsService;
         }
 
-        public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
         {
-            await eventsService.DeleteEventAsync(request.EventId);
+            return await eventsService.DeleteEventAsync(request.EventId);
         }
     }
 }

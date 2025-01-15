@@ -9,5 +9,5 @@ namespace Events.Application.Comands.Events.UpdateEvent
         string Place,
         string Category,
         int MaxParticipant,
-        DateTime Date) : IRequest;
+        DateTime Date) : IRequest<Guid>;
 }

@@ -13,20 +13,25 @@ namespace Events.Application.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task DeleteRegistrationAsync(Guid registrationId)
+        public async Task<Guid> DeleteRegistrationAsync(Guid registrationId)
         {
-            await unitOfWork.Registrations.Delete(registrationId);
+            var id = await unitOfWork.Registrations.Delete(registrationId);
+            await unitOfWork.SaveChangesAsync();
+
+            return id;
         }
 
-        public async Task CreateRegistrationAsync(Guid eventId, Guid participantId)
+        public async Task<Guid> CreateRegistrationAsync(Guid eventId, Guid participantId)
         {
             var registration = Registration.Create(
                 Guid.NewGuid(),
                 eventId,
                 participantId);
 
-            await unitOfWork.Registrations.Create(registration);
+            var id = await unitOfWork.Registrations.Create(registration);
             await unitOfWork.SaveChangesAsync();
+
+            return id;
         }
     }
 }

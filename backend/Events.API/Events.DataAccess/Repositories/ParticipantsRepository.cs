@@ -17,10 +17,12 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task Create(Participant participant)
+        public async Task<Guid> Create(Participant participant)
         {
             var participantEntity = mapper.Map<ParticipantEntity>(participant);
             await context.Participants.AddAsync(participantEntity);
+
+            return participantEntity.Id;
         }
 
         public async Task<List<Participant>> Get()
@@ -39,7 +41,7 @@ namespace Events.DataAccess.Repositories
             return mapper.Map<Participant>(participantEntity);
         }
 
-        public async Task Delete(Guid id)
+        public async Task<Guid> Delete(Guid id)
         {
             var participant = await context.Participants
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -50,6 +52,8 @@ namespace Events.DataAccess.Repositories
             }
 
             context.Participants.Remove(participant);
+
+            return id;
         }
     }
 }

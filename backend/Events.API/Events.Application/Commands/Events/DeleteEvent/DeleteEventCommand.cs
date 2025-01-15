@@ -2,5 +2,5 @@
 
 namespace Events.Application.Comands.Events.DeleteEvent
 {
-    public record DeleteEventCommand(Guid EventId) : IRequest;
+    public record DeleteEventCommand(Guid EventId) : IRequest<Guid>;
 }

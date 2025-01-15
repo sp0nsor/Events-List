@@ -19,7 +19,7 @@ namespace Events.Application.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task CreateParticipantAsync(
+        public async Task<Guid> CreateParticipantAsync(
             string firstName,
             string lastName,
             DateTime birthDate,
@@ -32,14 +32,18 @@ namespace Events.Application.Services
                 birthDate,
                 email);
 
-            await unitOfWork.Participants.Create(participant);
+            var id = await unitOfWork.Participants.Create(participant);
             await unitOfWork.SaveChangesAsync();
+
+            return id;
         }
 
-        public async Task DeleteParticipantAsync(Guid participantId)
+        public async Task<Guid> DeleteParticipantAsync(Guid participantId)
         {
-            await unitOfWork.Participants.Delete(participantId);
+            var id = await unitOfWork.Participants.Delete(participantId);
             await unitOfWork.SaveChangesAsync();
+
+            return id;
         }
 
         public async Task<List<ParticipantDto>> GetParticipantsAsync()

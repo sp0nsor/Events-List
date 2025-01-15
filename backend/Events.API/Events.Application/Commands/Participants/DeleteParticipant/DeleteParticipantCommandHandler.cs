@@ -4,7 +4,7 @@ using MediatR;
 namespace Events.Application.Comands.Participants.DeleteParticipant
 {
     public class DeleteParticipantCommandHandler
-        : IRequestHandler<DeleteParticipantCommand>
+        : IRequestHandler<DeleteParticipantCommand, Guid>
     {
         private readonly IParticipantsService participantsService;
 
@@ -14,9 +14,9 @@ namespace Events.Application.Comands.Participants.DeleteParticipant
             this.participantsService = participantsService;
         }
 
-        public async Task Handle(DeleteParticipantCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(DeleteParticipantCommand request, CancellationToken cancellationToken)
         {
-            await participantsService.DeleteParticipantAsync(request.ParticipantId);
+            return await participantsService.DeleteParticipantAsync(request.ParticipantId);
         }
     }
 }

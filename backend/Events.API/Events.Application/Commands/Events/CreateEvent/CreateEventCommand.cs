@@ -11,5 +11,5 @@ namespace Events.Application.Comands.Events.CreateEvent
         int MaxParticipantCount,
         DateTime Date,
         IFormFile Image
-    ) : IRequest;
+    ) : IRequest<Guid>;
 }

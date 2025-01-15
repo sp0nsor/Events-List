@@ -18,10 +18,12 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task Create(Event @event)
+        public async Task<Guid> Create(Event @event)
         {
             var eventEnity =  mapper.Map<EventEntity>(@event);
             await context.Events.AddAsync(eventEnity);
+
+            return eventEnity.Id;
         }
 
         public async Task<PagedList<Event>> Get(
@@ -93,7 +95,7 @@ namespace Events.DataAccess.Repositories
             return mapper.Map<Event>(eventEntity);
         }
 
-        public async Task Update(Guid id, string name, string description,
+        public async Task<Guid> Update(Guid id, string name, string description,
             string place, string category, int maxParticipantCount, DateTime time)
         {
             await context.Events
@@ -105,13 +107,17 @@ namespace Events.DataAccess.Repositories
                     .SetProperty(e => e.Category, category)
                     .SetProperty(e => e.MaxParticipantCount, maxParticipantCount)
                     .SetProperty(e => e.Time, time));
+
+            return id;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<Guid> Delete(Guid id)
         {
             await context.Events
                 .Where(e => e.Id == id)
                 .ExecuteDeleteAsync();
+
+            return id;
         }
     }
 }

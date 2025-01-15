@@ -4,7 +4,7 @@ using MediatR;
 namespace Events.Application.Comands.Registrations.DeleteRegistration
 {
     public class DeleteRegistrationCommandHandler
-        : IRequestHandler<DeleteRegistrationCommand>
+        : IRequestHandler<DeleteRegistrationCommand, Guid>
     {
         private readonly IRegistrationsService registrationsService;
 
@@ -14,9 +14,9 @@ namespace Events.Application.Comands.Registrations.DeleteRegistration
             this.registrationsService = registrationsService;
         }
 
-        public async Task Handle(DeleteRegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(DeleteRegistrationCommand request, CancellationToken cancellationToken)
         {
-            await registrationsService.DeleteRegistrationAsync(request.RegistrationId);
+            return await registrationsService.DeleteRegistrationAsync(request.RegistrationId);
         }
     }
 }

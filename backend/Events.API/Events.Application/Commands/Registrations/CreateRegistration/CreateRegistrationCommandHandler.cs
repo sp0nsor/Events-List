@@ -4,7 +4,7 @@ using MediatR;
 namespace Events.Application.Comands.Registrations.CreateRegistration
 {
     public class CreateRegistrationCommandHandler
-        : IRequestHandler<CreateRegistrationCommand>
+        : IRequestHandler<CreateRegistrationCommand, Guid>
     {
         private readonly IRegistrationsService registrationsService;
 
@@ -14,9 +14,11 @@ namespace Events.Application.Comands.Registrations.CreateRegistration
             this.registrationsService = registrationsService;
         }
 
-        public async Task Handle(CreateRegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateRegistrationCommand request, CancellationToken cancellationToken)
         {
-            await registrationsService.CreateRegistrationAsync(request.EventId, request.ParticipantId);
+            return await registrationsService.CreateRegistrationAsync(
+                request.EventId,
+                request.ParticipantId);
         }
     }
 }

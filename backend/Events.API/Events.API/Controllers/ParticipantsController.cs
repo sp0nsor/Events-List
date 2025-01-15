@@ -24,9 +24,9 @@ namespace Events.API.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> CreateParticipant([FromBody] CreateParticipantCommand command)
         {
-            await mediator.Send(command);
+            var response = await mediator.Send(command);
 
-            return Ok();
+            return Ok(response);
         }
 
         [HttpGet]
@@ -51,9 +51,9 @@ namespace Events.API.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> DeleteParticipant([FromQuery] DeleteParticipantCommand command)
         {
-            await mediator.Send(command);
+            var response = await mediator.Send(command);
 
-            return Ok();
+            return Ok(response);
         }
     }
 }

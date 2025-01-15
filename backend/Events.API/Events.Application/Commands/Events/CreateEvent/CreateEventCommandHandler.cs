@@ -3,18 +3,18 @@ using MediatR;
 
 namespace Events.Application.Comands.Events.CreateEvent
 {
-    public class CreateEventComandHandler : IRequestHandler<CreateEventCommand>
+    public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Guid>
     {
         private readonly IEventsService eventsService;
 
-        public CreateEventComandHandler(IEventsService eventsService)
+        public CreateEventCommandHandler(IEventsService eventsService)
         {
             this.eventsService = eventsService;
         }
 
-        public async Task Handle(CreateEventCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-            await eventsService.CreateEventAsync(
+            return await eventsService.CreateEventAsync(
                 request.Name,
                 request.Description,
                 request.Place,

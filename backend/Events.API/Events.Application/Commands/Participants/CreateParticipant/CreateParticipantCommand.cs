@@ -6,5 +6,5 @@ namespace Events.Application.Comands.Participants.CreateParticipant
         string FirstName,
         string LastName,
         string Email,
-        DateTime BirthDate) : IRequest;
+        DateTime BirthDate) : IRequest<Guid>;
 }

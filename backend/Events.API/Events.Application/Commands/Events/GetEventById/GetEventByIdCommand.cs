@@ -3,5 +3,6 @@ using MediatR;
 
 namespace Events.Application.Comands.Events.GetEventById
 {
-    public record GetEventByIdCommand(Guid EventId) : IRequest<EventDto>;
+    public record GetEventByIdCommand(
+        Guid EventId) : IRequest<EventDto>;
 }

@@ -23,7 +23,7 @@ namespace Events.Application.Services
             this.imageService = imageService;
         }
 
-        public async Task CreateEventAsync(
+        public async Task<Guid> CreateEventAsync(
             string name,
             string description,
             string place,
@@ -46,14 +46,18 @@ namespace Events.Application.Services
                 maxParticipantCount,
                 image);
 
-            await unitOfWork.Events.Create(@event);
+            var id = await unitOfWork.Events.Create(@event);
             await unitOfWork.SaveChangesAsync();
+
+            return id;
         }
 
-        public async Task DeleteEventAsync(Guid eventId)
+        public async Task<Guid> DeleteEventAsync(Guid eventId)
         {
-            await unitOfWork.Events.Delete(eventId);
+            var id = await unitOfWork.Events.Delete(eventId);
             await unitOfWork.SaveChangesAsync();
+
+            return id;
         }
 
         public async Task<EventDto?> GetEventByIdAsync(Guid id)
@@ -84,7 +88,7 @@ namespace Events.Application.Services
             return mapper.Map<EventsPageDto>(eventsPage);
         }
 
-        public async Task UpdateEventAync(
+        public async Task<Guid> UpdateEventAync(
             Guid id,
             string name,
             string description,
@@ -93,7 +97,7 @@ namespace Events.Application.Services
             int maxParticipantCount,
             DateTime date)
         {
-            await unitOfWork.Events.Update(
+            var resultId = await unitOfWork.Events.Update(
                 id,
                 name,
                 description,
@@ -103,6 +107,8 @@ namespace Events.Application.Services
                 date);
 
             await unitOfWork.SaveChangesAsync();
+
+            return resultId;
         }
 
         public async Task<List<ParticipantDto>> GetEventParticipantsAsync(Guid eventId)

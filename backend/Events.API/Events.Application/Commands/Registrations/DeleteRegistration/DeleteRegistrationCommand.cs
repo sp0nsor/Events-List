@@ -2,5 +2,6 @@
 
 namespace Events.Application.Comands.Registrations.DeleteRegistration
 {
-    public record DeleteRegistrationCommand(Guid RegistrationId) : IRequest;
+    public record DeleteRegistrationCommand(
+        Guid RegistrationId) : IRequest<Guid>;
 }

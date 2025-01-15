@@ -2,5 +2,5 @@
 
 namespace Events.Application.Comands.Participants.DeleteParticipant
 {
-    public record DeleteParticipantCommand(Guid ParticipantId) : IRequest;
+    public record DeleteParticipantCommand(Guid ParticipantId) : IRequest<Guid>;
 }
