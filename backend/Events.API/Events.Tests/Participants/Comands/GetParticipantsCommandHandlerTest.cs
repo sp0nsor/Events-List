@@ -5,7 +5,7 @@ using Moq;
 
 namespace Events.Tests.Participants.Comands
 {
-    public class GetParticipantsCommandHandlerTests
+    public class GetParticipantsCommandHandlerTest
     {
         [Fact]
         public async Task Handle_ShouldReturnListOfParticipants_WhenParticipantsExist()
