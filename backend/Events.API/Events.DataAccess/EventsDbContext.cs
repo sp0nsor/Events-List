@@ -1,6 +1,5 @@
 ﻿using Events.DataAccess.Configurations;
 using Events.DataAccess.Entities;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
