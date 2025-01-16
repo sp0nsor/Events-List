@@ -15,7 +15,7 @@ namespace Events.Application.Validators
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")
-                .EmailAddress().WithMessage("Email must be a valid email address.");
+                .EmailAddress().WithMessage("Email must be valid email address.");
 
             RuleFor(x => x.BirthDate)
                 .NotEmpty().WithMessage("Birth date is required.")
