@@ -1,7 +1,7 @@
 ﻿using Events.Application.Comands.Registrations.CreateRegistration;
 using FluentValidation;
 
-namespace Events.API.Validators
+namespace Events.Application.Validators
 {
     public class CreateRegistrationValidator : AbstractValidator<CreateRegistrationCommand>
     {

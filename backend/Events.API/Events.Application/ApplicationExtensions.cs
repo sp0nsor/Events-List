@@ -1,6 +1,11 @@
-﻿using Events.Application.Interfaces.Services;
+﻿using Events.Application.Comands.Events.CreateEvent;
+using Events.Application.Comands.Participants.CreateParticipant;
+using Events.Application.Comands.Registrations.CreateRegistration;
+using Events.Application.Interfaces.Services;
 using Events.Application.Mappings;
 using Events.Application.Services;
+using Events.Application.Validators;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Events.Application
@@ -18,6 +23,10 @@ namespace Events.Application
             services.AddScoped<IEventsService, EventsService>();
             services.AddScoped<IParticipantsService, ParticipantsService>();
             services.AddScoped<IRegistrationsService, RegistrationsService>();
+
+            services.AddScoped<IValidator<CreateEventCommand>, CreateEventValidator>();
+            services.AddScoped<IValidator<CreateParticipantCommand>, CreateParticipantValidator>();
+            services.AddScoped<IValidator<CreateRegistrationCommand>, CreateRegistrationValidator>();
 
             return services;
         }

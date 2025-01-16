@@ -1,7 +1,7 @@
 ﻿using Events.Application.Comands.Participants.CreateParticipant;
 using FluentValidation;
 
-namespace Events.API.Validators
+namespace Events.Application.Validators
 {
     public class CreateParticipantValidator : AbstractValidator<CreateParticipantCommand>
     {

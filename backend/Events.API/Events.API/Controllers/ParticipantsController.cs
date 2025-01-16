@@ -6,6 +6,7 @@ using Events.Application.Comands.Participants.GetParticipantById;
 using Events.Application.Comands.Participants.DeleteParticipant;
 using Microsoft.AspNetCore.Authorization;
 using Events.Core.Enums;
+using FluentValidation;
 
 namespace Events.API.Controllers
 {
@@ -14,16 +15,26 @@ namespace Events.API.Controllers
     public class ParticipantsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IValidator<CreateParticipantCommand> createValidator;
 
-        public ParticipantsController(IMediator mediator)
+        public ParticipantsController(
+            IMediator mediator,
+            IValidator<CreateParticipantCommand> createValidator)
         {
             this.mediator = mediator;
+            this.createValidator = createValidator;
         }
 
         [HttpPost]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> CreateParticipant([FromBody] CreateParticipantCommand command)
         {
+            var validationResult = await createValidator.ValidateAsync(command);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             var response = await mediator.Send(command);
 
             return Ok(response);

@@ -4,6 +4,7 @@ using Events.Application.Comands.Events.GetEventById;
 using Events.Application.Comands.Events.GetEventParticipants;
 using Events.Application.Comands.Events.GetEvents;
 using Events.Application.Comands.Events.UpdateEvent;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,26 @@ namespace Events.API.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IValidator<CreateEventCommand> createValidator;
 
-        public EventsController(IMediator mediator)
+        public EventsController(
+            IMediator mediator,
+            IValidator<CreateEventCommand> createValidator)
         {
             this.mediator = mediator;
+            this.createValidator = createValidator;
         }
 
         [HttpPost]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> CreateEvent([FromForm] CreateEventCommand command)
         {
+            var validationResult = await createValidator.ValidateAsync(command);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             var response = await mediator.Send(command);
 
             return Ok(response);

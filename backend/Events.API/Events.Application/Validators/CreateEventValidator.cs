@@ -1,7 +1,8 @@
 ﻿using Events.Application.Comands.Events.CreateEvent;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 
-namespace Events.API.Validators
+namespace Events.Application.Validators
 {
     public class CreateEventValidator : AbstractValidator<CreateEventCommand>
     {
