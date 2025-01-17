@@ -5,13 +5,13 @@ using Events.DataAccess.Interfaces.Repositories;
 
 namespace Events.Application.Services
 {
-    public class UsersService : IUsersService
+    public class AuthService : IAuthService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IPasswordHasher passwordHasher;
         private readonly IJwtProvider jwtProvider;
 
-        public UsersService(
+        public AuthService(
             IUnitOfWork unitOfWork,
             IPasswordHasher passwordHasher,
             IJwtProvider jwtProvider)

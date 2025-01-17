@@ -6,10 +6,10 @@ namespace Events.Application.Commands.Users.RegisterUser
     public class RegisterUserCommandHandler 
         : IRequestHandler<RegisterUserCommand>
     {
-        private readonly IUsersService usersService;
+        private readonly IAuthService usersService;
 
         public RegisterUserCommandHandler(
-            IUsersService usersService)
+            IAuthService usersService)
         {
             this.usersService = usersService;
         }

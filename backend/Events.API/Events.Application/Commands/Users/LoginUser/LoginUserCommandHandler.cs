@@ -6,17 +6,17 @@ namespace Events.Application.Commands.Users.LoginUser
     public class LoginUserCommandHandler
         : IRequestHandler<LoginUserCommand, string>
     {
-        private readonly IUsersService usersService;
+        private readonly IAuthService authService;
 
         public LoginUserCommandHandler(
-            IUsersService usersService)
+            IAuthService authService)
         {
-            this.usersService = usersService;
+            this.authService = authService;
         }
 
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            return await usersService.LoginAsync(
+            return await authService.LoginAsync(
                 request.Email,
                 request.Password);
         }
