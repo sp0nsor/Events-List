@@ -1,9 +1,9 @@
 ﻿using Events.Application.Comands.Events.CreateEvent;
-using Events.Application.Comands.Events.DeleteEvent;
-using Events.Application.Comands.Events.GetEventById;
-using Events.Application.Comands.Events.GetEventParticipants;
-using Events.Application.Comands.Events.GetEvents;
 using Events.Application.Comands.Events.UpdateEvent;
+using Events.Application.Commands.Events.DeleteEvent;
+using Events.Application.Queries.Events.GetEventById;
+using Events.Application.Queries.Events.GetEventParticipants;
+using Events.Application.Queries.Events.GetEvents;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +43,7 @@ namespace Events.API.Controllers
 
         [HttpGet]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetEvents([FromQuery] GetEventsCommand command)
+        public async Task<ActionResult> GetEvents([FromQuery] GetEventsQuery command)
         {
             var response = await mediator.Send(command);
 
@@ -52,7 +52,7 @@ namespace Events.API.Controllers
 
         [HttpGet("Participants")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetEventParticipants([FromQuery] GetEventParticipantsCommand command)
+        public async Task<ActionResult> GetEventParticipants([FromQuery] GetEventParticipantsQuery command)
         {
             var response = await mediator.Send(command);
 
@@ -61,7 +61,7 @@ namespace Events.API.Controllers
 
         [HttpGet("id")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetEventById([FromQuery] GetEventByIdCommand command)
+        public async Task<ActionResult> GetEventById([FromQuery] GetEventByIdQuery command)
         {
             var response = await mediator.Send(command);
 

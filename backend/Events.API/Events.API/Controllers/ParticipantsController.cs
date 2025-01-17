@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Events.Application.Comands.Participants.CreateParticipant;
-using Events.Application.Comands.Participants.GetParticipants;
-using Events.Application.Comands.Participants.GetParticipantById;
 using Events.Application.Comands.Participants.DeleteParticipant;
 using Microsoft.AspNetCore.Authorization;
 using Events.Core.Enums;
 using FluentValidation;
+using Events.Application.Queries.Participants.GetParticipants;
+using Events.Application.Queries.Participants.GetParticipantById;
 
 namespace Events.API.Controllers
 {
@@ -42,18 +42,18 @@ namespace Events.API.Controllers
 
         [HttpGet]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetParticipants([FromQuery] GetParticipantsCommand command)
+        public async Task<ActionResult> GetParticipants([FromQuery] GetParticipantsQuery query)
         {
-            var response = await mediator.Send(command);
+            var response = await mediator.Send(query);
 
             return Ok(response);
         }
 
         [HttpGet("id")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetParticipantById([FromQuery] GetParticipantByIdCommand command)
+        public async Task<ActionResult> GetParticipantById([FromQuery] GetParticipantByIdQuery query)
         {
-            var response = await mediator.Send(command);
+            var response = await mediator.Send(query);
 
             return Ok(response);
         }

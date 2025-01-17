@@ -1,9 +1,9 @@
 ﻿using Events.Application.DTOs;
 using MediatR;
 
-namespace Events.Application.Comands.Events.GetEvents
+namespace Events.Application.Queries.Events.GetEvents
 {
-    public record GetEventsCommand(
+    public record GetEventsQuery(
         string? SearchName,
         string? SearchPlace,
         string? SearchCategory,

@@ -1,8 +1,8 @@
 ﻿using Events.Application.DTOs;
 using MediatR;
 
-namespace Events.Application.Comands.Events.GetEventById
+namespace Events.Application.Queries.Events.GetEventById
 {
-    public record GetEventByIdCommand(
+    public record GetEventByIdQuery(
         Guid EventId) : IRequest<EventDto>;
 }

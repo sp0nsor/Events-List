@@ -1,11 +1,11 @@
-﻿using Events.Application.Comands.Participants.GetParticipantById;
-using Events.Application.DTOs;
+﻿using Events.Application.DTOs;
 using Events.Application.Interfaces.Services;
+using Events.Application.Queries.Participants.GetParticipantById;
 using Moq;
 
-namespace Events.Tests.Participants.Comands
+namespace Events.Tests.Participants.Queries
 {
-    public class GetParticipantByIdCommandHandlerTest
+    public class GetParticipantByIdQueryHandlerTest
     {
         [Fact]
         public async Task Handle_ShouldReturnParticipant_WhenParticipantExists()
@@ -25,9 +25,9 @@ namespace Events.Tests.Participants.Comands
                 .Setup(service => service.GetParticipantByIdAsync(expectedParticipant.Id))
                 .ReturnsAsync(expectedParticipant);
 
-            var handler = new GetParticipantByIdCommandHandler(mockParticipantsService.Object);
+            var handler = new GetParticipantByIdQueryHandler(mockParticipantsService.Object);
 
-            var command = new GetParticipantByIdCommand
+            var command = new GetParticipantByIdQuery
             (
                 expectedParticipant.Id
             );

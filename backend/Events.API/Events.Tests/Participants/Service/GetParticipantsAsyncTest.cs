@@ -10,54 +10,71 @@ namespace Events.Tests.Participants.Service
     public class GetParticipantsAsyncTest
     {
         [Fact]
-        public async Task ShouldReturnMappedParticipants()
+        public async Task ShouldReturnMappedParticipantsPage()
         {
-            //Arrange
+            // Arrange
             var mapperMock = new Mock<IMapper>();
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var participantRepoMock = new Mock<IParticipantsRepository>();
 
-            unitOfWorkMock.Setup(
-                u => u.Participants)
+            unitOfWorkMock.Setup(u => u.Participants)
                 .Returns(participantRepoMock.Object);
 
             var participants = new List<Participant>
             {
                 Participant.Create(
                     Guid.NewGuid(),
-                    "TestLastName",
                     "TestFirstName",
+                    "TestLastName",
                     new DateTime(1990, 1, 1),
                     "test@mail.com")
             };
+
+            var pagedParticipants = PagedList<Participant>.Create(
+                participants,
+                participants.Count,
+                1,
+                10,
+                1);
 
             var participantDtos = new List<ParticipantDto>
             {
                 new ParticipantDto(
                     participants[0].Id,
-                    "TestlastName",
                     "TestFirstName",
-                    "tets@mail.ru",
+                    "TestLastName",
+                    "test@mail.com",
                     new DateTime(1990, 1, 1))
             };
 
-/*            participantRepoMock
-                .Setup(r => r.Get())
-                .ReturnsAsync(participants);
+            var pagedParticipantDtos = new PageListDto<ParticipantDto>(
+                participantDtos,
+                participants.Count,
+                1,
+                10,
+                1);
+
+            participantRepoMock
+                .Setup(r => r.Get(1, 10))
+                .ReturnsAsync(pagedParticipants);
 
             mapperMock
-                .Setup(m => m.Map<List<ParticipantDto>>(participants))
-                .Returns(participantDtos);
+                .Setup(m => m.Map<PageListDto<ParticipantDto>>(pagedParticipants))
+                .Returns(pagedParticipantDtos);
 
             var service = new ParticipantsService(mapperMock.Object, unitOfWorkMock.Object);
 
-            //Act
-            var result = await service.GetParticipantsAsync();
+            // Act
+            var result = await service.GetParticipantsAsync(1, 10);
 
-            //Assert
+            // Assert
             Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Equal(participantDtos, result);*/
+            Assert.Equal(pagedParticipantDtos.TotalCount, result.TotalCount);
+            Assert.Equal(pagedParticipantDtos.CurrentPage, result.CurrentPage);
+            Assert.Equal(pagedParticipantDtos.PageSize, result.PageSize);
+            Assert.Single(result.Items);
+            Assert.Equal(pagedParticipantDtos.Items[0].Id, result.Items[0].Id);
+            Assert.Equal(pagedParticipantDtos.Items[0].FirstName, result.Items[0].FirstName);
         }
     }
 }

@@ -2,14 +2,14 @@
 using Events.DataAccess.Entities;
 using Events.DataAccess.Repositories;
 using Events.Tests.Common;
+using Moq;
 
 namespace Events.Tests.Participants.Repository
 {
-    public class GetParticipantsTest
-        : RepositoryTestBase
+    public class GetParticipantsTest : RepositoryTestBase
     {
         [Fact]
-        public async Task Get_ShouldReturnListOfParticipants()
+        public async Task Get_ShouldReturnPagedListOfParticipants()
         {
             // Arrange
             var participantsEntities = new List<ParticipantEntity>
@@ -40,7 +40,6 @@ namespace Events.Tests.Participants.Repository
                     "TestLastName1",
                     new DateTime(1990, 1, 1),
                     "test1@mail.com"),
-
                 Participant.Create(
                     participantsEntities[1].Id,
                     "TestFirstName2",
@@ -49,7 +48,8 @@ namespace Events.Tests.Participants.Repository
                     "test2@mail.com")
             };
 
-            MapperMock.Setup(m => m.Map<List<Participant>>(participantsEntities)).Returns(participants);
+            MapperMock.Setup(m => m.Map<List<Participant>>(It.IsAny<List<ParticipantEntity>>()))
+                .Returns(participants);
 
             await using var context = CreateContext();
             await context.Participants.AddRangeAsync(participantsEntities);
@@ -57,14 +57,21 @@ namespace Events.Tests.Participants.Repository
 
             var repository = new ParticipantsRepository(context, MapperMock.Object);
 
+            int page = 1;
+            int pageSize = 2;
+
             // Act
-/*            var result = await repository.Get();
+            var result = await repository.Get(page, pageSize);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count);
-            Assert.Equal("TestFirstName1", result[0].FirstName);
-            Assert.Equal("TestFirstName2", result[1].FirstName);*/
+            Assert.Equal(2, result.TotalCount);
+            Assert.Equal(1, result.CurrentPage);
+            Assert.Equal(pageSize, result.PageSize);
+            Assert.Equal(1, result.TotalPages);
+            Assert.Equal(2, result.Items.Count);
+            Assert.Equal("TestFirstName1", result.Items[0].FirstName);
+            Assert.Equal("TestFirstName2", result.Items[1].FirstName);
         }
     }
 }

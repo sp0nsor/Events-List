@@ -2,20 +2,20 @@
 using Events.Application.Interfaces.Services;
 using MediatR;
 
-namespace Events.Application.Comands.Participants.GetParticipants
+namespace Events.Application.Queries.Participants.GetParticipants
 {
-    public class GetParticipantsCommandHandler
-        : IRequestHandler<GetParticipantsCommand, PageListDto<ParticipantDto>>
+    public class GetParticipantsQueryHandler
+        : IRequestHandler<GetParticipantsQuery, PageListDto<ParticipantDto>>
     {
         private readonly IParticipantsService participantsService;
 
-        public GetParticipantsCommandHandler(
+        public GetParticipantsQueryHandler(
             IParticipantsService participantsService)
         {
             this.participantsService = participantsService;
         }
 
-        public async Task<PageListDto<ParticipantDto>> Handle(GetParticipantsCommand request, CancellationToken cancellationToken)
+        public async Task<PageListDto<ParticipantDto>> Handle(GetParticipantsQuery request, CancellationToken cancellationToken)
         {
             return await participantsService.GetParticipantsAsync(request.Page, request.PageSize);
         }
