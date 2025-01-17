@@ -15,7 +15,7 @@ namespace Events.Tests.Participants.Comands
 
             mockParticipantsService
                 .Setup(service => service
-                .DeleteParticipantAsync(exectedGuid))
+                .DeleteParticipantAsync(exectedGuid, CancellationToken.None))
                 .ReturnsAsync(exectedGuid);
 
             var handler = new DeleteParticipantCommandHandler(mockParticipantsService.Object);
@@ -31,7 +31,7 @@ namespace Events.Tests.Participants.Comands
             Assert.Equal(exectedGuid, result);
 
             mockParticipantsService.Verify(service => service
-            .DeleteParticipantAsync(exectedGuid), Times.Once());
+            .DeleteParticipantAsync(exectedGuid, CancellationToken.None), Times.Once());
         }
     }
 }

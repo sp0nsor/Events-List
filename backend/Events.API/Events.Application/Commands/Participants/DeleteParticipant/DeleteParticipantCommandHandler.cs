@@ -16,7 +16,7 @@ namespace Events.Application.Comands.Participants.DeleteParticipant
 
         public async Task<Guid> Handle(DeleteParticipantCommand request, CancellationToken cancellationToken)
         {
-            return await participantsService.DeleteParticipantAsync(request.ParticipantId);
+            return await participantsService.DeleteParticipantAsync(request.ParticipantId, cancellationToken);
         }
     }
 }

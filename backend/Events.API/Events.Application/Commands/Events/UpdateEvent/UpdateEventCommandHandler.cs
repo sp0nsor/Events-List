@@ -20,7 +20,8 @@ namespace Events.Application.Comands.Events.UpdateEvent
                 request.Place,
                 request.Category,
                 request.MaxParticipant,
-                request.Date);
+                request.Date, 
+                cancellationToken);
         }
     }
 }

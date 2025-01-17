@@ -22,7 +22,7 @@ namespace Events.Tests.Participants.Queries
             );
 
             mockParticipantsService
-                .Setup(service => service.GetParticipantByIdAsync(expectedParticipant.Id))
+                .Setup(service => service.GetParticipantByIdAsync(expectedParticipant.Id, CancellationToken.None))
                 .ReturnsAsync(expectedParticipant);
 
             var handler = new GetParticipantByIdQueryHandler(mockParticipantsService.Object);
@@ -44,7 +44,7 @@ namespace Events.Tests.Participants.Queries
             Assert.Equal(expectedParticipant.BirthDate, result.BirthDate);
 
             mockParticipantsService.Verify(service => service
-            .GetParticipantByIdAsync(expectedParticipant.Id), Times.Once);
+            .GetParticipantByIdAsync(expectedParticipant.Id, CancellationToken.None), Times.Once);
         }
 
     }

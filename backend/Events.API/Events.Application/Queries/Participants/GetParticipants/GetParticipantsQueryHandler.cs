@@ -17,7 +17,7 @@ namespace Events.Application.Queries.Participants.GetParticipants
 
         public async Task<PageListDto<ParticipantDto>> Handle(GetParticipantsQuery request, CancellationToken cancellationToken)
         {
-            return await participantsService.GetParticipantsAsync(request.Page, request.PageSize);
+            return await participantsService.GetParticipantsAsync(request.Page, request.PageSize, CancellationToken.None);
         }
     }
 }

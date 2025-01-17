@@ -21,6 +21,7 @@ namespace Events.Application.Queries.Events.GetEvents
                 request.SearchCategory,
                 request.SortItem,
                 request.SortOrder,
+                cancellationToken,
                 request.Page,
                 request.PageSize);
         }

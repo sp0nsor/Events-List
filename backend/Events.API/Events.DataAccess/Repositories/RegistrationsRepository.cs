@@ -17,19 +17,19 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task<Guid> Create(Registration registration)
+        public async Task<Guid> Create(Registration registration, CancellationToken cancellationToken)
         {
             var registrationEntity = mapper.Map<RegistrationEntity>(registration);
-            await context.Registrations.AddAsync(registrationEntity);
+            await context.Registrations.AddAsync(registrationEntity, cancellationToken);
 
             return registrationEntity.Id;
         }
 
-        public async Task<Guid> Delete(Guid id)
+        public async Task<Guid> Delete(Guid id, CancellationToken cancellationToken)
         {
             await context.Registrations
                 .Where(r => r.Id == id)
-                .ExecuteDeleteAsync();
+                .ExecuteDeleteAsync(cancellationToken);
 
             return id;
         }

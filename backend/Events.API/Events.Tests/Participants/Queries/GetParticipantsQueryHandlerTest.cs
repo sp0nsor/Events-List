@@ -43,7 +43,10 @@ namespace Events.Tests.Participants.Queries
             );
 
             mockParticipantsService
-                .Setup(service => service.GetParticipantsAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Setup(service => service.GetParticipantsAsync(
+                    It.IsAny<int>(), 
+                    It.IsAny<int>(),
+                    CancellationToken.None))
                 .ReturnsAsync(expectedPageList);
 
             var handler = new GetParticipantsQueryHandler(mockParticipantsService.Object);
@@ -60,7 +63,10 @@ namespace Events.Tests.Participants.Queries
             Assert.Equal(expectedPageList, result);
 
             mockParticipantsService.Verify(
-                service => service.GetParticipantsAsync(query.Page, query.PageSize),
+                service => service.GetParticipantsAsync(
+                    query.Page,
+                    query.PageSize,
+                    CancellationToken.None),
                 Times.Once
             );
         }
@@ -80,7 +86,10 @@ namespace Events.Tests.Participants.Queries
             );
 
             mockParticipantsService
-                .Setup(service => service.GetParticipantsAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Setup(service => service.GetParticipantsAsync(
+                    It.IsAny<int>(), 
+                    It.IsAny<int>()
+                    , CancellationToken.None))
                 .ReturnsAsync(expectedPageList);
 
             var handler = new GetParticipantsQueryHandler(mockParticipantsService.Object);
@@ -96,7 +105,10 @@ namespace Events.Tests.Participants.Queries
             Assert.Equal(0, result.TotalCount);
 
             mockParticipantsService.Verify(
-                service => service.GetParticipantsAsync(query.Page, query.PageSize),
+                service => service.GetParticipantsAsync(
+                    query.Page,
+                    query.PageSize
+                    , CancellationToken.None),
                 Times.Once
             );
         }

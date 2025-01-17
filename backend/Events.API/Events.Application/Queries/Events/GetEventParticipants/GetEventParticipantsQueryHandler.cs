@@ -16,7 +16,7 @@ namespace Events.Application.Queries.Events.GetEventParticipants
 
         public async Task<List<ParticipantDto>> Handle(GetEventParticipantsQuery request, CancellationToken cancellationToken)
         {
-            return await eventsService.GetEventParticipantsAsync(request.EventId);
+            return await eventsService.GetEventParticipantsAsync(request.EventId, cancellationToken);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Events.Application.Queries.Participants.GetParticipantById
 
         public async Task<ParticipantDto> Handle(GetParticipantByIdQuery request, CancellationToken cancellationToken)
         {
-            return await participantsService.GetParticipantByIdAsync(request.ParticipantId);
+            return await participantsService.GetParticipantByIdAsync(request.ParticipantId, cancellationToken);
         }
     }
 }

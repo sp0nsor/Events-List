@@ -55,7 +55,7 @@ namespace Events.Tests.Participants.Service
                 1);
 
             participantRepoMock
-                .Setup(r => r.Get(1, 10))
+                .Setup(r => r.Get(1, 10, CancellationToken.None))
                 .ReturnsAsync(pagedParticipants);
 
             mapperMock
@@ -65,7 +65,7 @@ namespace Events.Tests.Participants.Service
             var service = new ParticipantsService(mapperMock.Object, unitOfWorkMock.Object);
 
             // Act
-            var result = await service.GetParticipantsAsync(1, 10);
+            var result = await service.GetParticipantsAsync(1, 10, CancellationToken.None);
 
             // Assert
             Assert.NotNull(result);

@@ -36,7 +36,7 @@ namespace Events.Tests.Participants.Service
                 new DateTime(1999, 9, 9));
 
             participantRepoMock
-                .Setup(r => r.GetById(participant.Id))
+                .Setup(r => r.GetById(participant.Id, CancellationToken.None))
                 .ReturnsAsync(participant);
 
             mapperMock
@@ -46,7 +46,7 @@ namespace Events.Tests.Participants.Service
             var service = new ParticipantsService(mapperMock.Object, unitOfWorkMock.Object);
 
             //Act
-            var result = await service.GetParticipantByIdAsync(participant.Id);
+            var result = await service.GetParticipantByIdAsync(participant.Id, CancellationToken.None);
 
             //Assert
             Assert.NotNull(result);

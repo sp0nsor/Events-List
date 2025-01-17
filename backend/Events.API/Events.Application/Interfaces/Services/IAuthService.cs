@@ -2,7 +2,14 @@
 {
     public interface IAuthService
     {
-        Task<string> LoginAsync(string email, string password);
-        Task RegisterAsync(string userName, string email, string password);
+        Task<string> LoginAsync(
+            string email, 
+            string password,
+            CancellationToken cancellationToken);
+        Task RegisterAsync(
+            string userName,
+            string email,
+            string password, 
+            CancellationToken cancellationToken);
     }
 }

@@ -21,7 +21,8 @@ namespace Events.Application.Comands.Events.CreateEvent
                 request.Category,
                 request.MaxParticipantCount,
                 request.Date,
-                request.Image);
+                request.Image,
+                cancellationToken);
         }
     }
 }

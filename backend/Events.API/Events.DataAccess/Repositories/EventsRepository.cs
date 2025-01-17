@@ -18,12 +18,12 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task<Guid> Create(Event @event)
+        public async Task<Guid> Create(Event @event, CancellationToken cancellationToken = default)
         {
-            var eventEnity =  mapper.Map<EventEntity>(@event);
-            await context.Events.AddAsync(eventEnity);
+            var eventEntity = mapper.Map<EventEntity>(@event);
+            await context.Events.AddAsync(eventEntity, cancellationToken);
 
-            return eventEnity.Id;
+            return eventEntity.Id;
         }
 
         public async Task<PagedList<Event>> Get(
@@ -33,7 +33,8 @@ namespace Events.DataAccess.Repositories
             string? sortItem,
             string? sortOrder,
             int page,
-            int pageSize)
+            int pageSize,
+            CancellationToken cancellationToken = default)
         {
             var eventsQuery = context.Events
                 .Include(e => e.Image)
@@ -55,12 +56,12 @@ namespace Events.DataAccess.Repositories
                 ? eventsQuery.OrderByDescending(selectorKey)
                 : eventsQuery.OrderBy(selectorKey);
 
-            var totalCount = await eventsQuery.CountAsync();
+            var totalCount = await eventsQuery.CountAsync(cancellationToken);
 
             var eventEntities = await eventsQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             var events = mapper.Map<List<Event>>(eventEntities);
 
@@ -72,7 +73,7 @@ namespace Events.DataAccess.Repositories
                 (int)Math.Ceiling((double)totalCount / pageSize));
         }
 
-        public async Task<List<Participant>> GetParticipants(Guid eventId)
+        public async Task<List<Participant>> GetParticipants(Guid eventId, CancellationToken cancellationToken = default)
         {
             var participantsEntities = await context.Events
                 .AsNoTracking()
@@ -80,23 +81,30 @@ namespace Events.DataAccess.Repositories
                 .Include(e => e.Registrations)
                     .ThenInclude(r => r.Participant)
                 .SelectMany(e => e.Registrations.Select(r => r.Participant))
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return mapper.Map<List<Participant>>(participantsEntities);
         }
 
-        public async Task<Event> GetById(Guid id)
+        public async Task<Event> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             var eventEntity = await context.Events
                 .Include(e => e.Image)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 
             return mapper.Map<Event>(eventEntity);
         }
 
-        public async Task<Guid> Update(Guid id, string name, string description,
-            string place, string category, int maxParticipantCount, DateTime time)
+        public async Task<Guid> Update(
+            Guid id,
+            string name,
+            string description,
+            string place,
+            string category,
+            int maxParticipantCount,
+            DateTime time,
+            CancellationToken cancellationToken = default)
         {
             await context.Events
                 .Where(e => e.Id == id)
@@ -106,16 +114,17 @@ namespace Events.DataAccess.Repositories
                     .SetProperty(e => e.Place, place)
                     .SetProperty(e => e.Category, category)
                     .SetProperty(e => e.MaxParticipantCount, maxParticipantCount)
-                    .SetProperty(e => e.Time, time));
+                    .SetProperty(e => e.Time, time),
+                    cancellationToken);
 
             return id;
         }
 
-        public async Task<Guid> Delete(Guid id)
+        public async Task<Guid> Delete(Guid id, CancellationToken cancellationToken = default)
         {
             await context.Events
                 .Where(e => e.Id == id)
-                .ExecuteDeleteAsync();
+                .ExecuteDeleteAsync(cancellationToken);
 
             return id;
         }

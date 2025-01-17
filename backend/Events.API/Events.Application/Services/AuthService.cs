@@ -21,7 +21,11 @@ namespace Events.Application.Services
             this.jwtProvider = jwtProvider;
         }
 
-        public async Task RegisterAsync(string userName, string email, string password)
+        public async Task RegisterAsync(
+            string userName,
+            string email,
+            string password,
+            CancellationToken cancellationToken)
         {
             var hashedPassword = passwordHasher.Generate(password);
 
@@ -31,13 +35,16 @@ namespace Events.Application.Services
                 hashedPassword,
                 email);
 
-            await unitOfWork.Users.Add(user);
+            await unitOfWork.Users.Add(user, cancellationToken);
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<string> LoginAsync(string email, string password)
+        public async Task<string> LoginAsync(
+            string email,
+            string password,
+            CancellationToken cancellationToken)
         {
-            var user = await unitOfWork.Users.GetByEmail(email);
+            var user = await unitOfWork.Users.GetByEmail(email, cancellationToken);
 
             var result = passwordHasher.Verify(password, user.PasswordHash);
 

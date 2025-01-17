@@ -3,6 +3,7 @@ using Events.Core.Models;
 using Events.DataAccess.Entities;
 using Events.DataAccess.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Events.DataAccess.Repositories
 {
@@ -17,24 +18,24 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task<Guid> Create(Participant participant)
+        public async Task<Guid> Create(Participant participant, CancellationToken cancellationToken = default)
         {
             var participantEntity = mapper.Map<ParticipantEntity>(participant);
-            await context.Participants.AddAsync(participantEntity);
+            await context.Participants.AddAsync(participantEntity, cancellationToken);
 
             return participantEntity.Id;
         }
 
-        public async Task<PagedList<Participant>> Get(int page, int pageSize)
+        public async Task<PagedList<Participant>> Get(int page, int pageSize, CancellationToken cancellationToken = default)
         {
             var participantQuery = context.Participants.AsNoTracking();
 
-            var totalCount = await participantQuery.CountAsync();
+            var totalCount = await participantQuery.CountAsync(cancellationToken);
 
             var participantEntities = await participantQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             var participants = mapper.Map<List<Participant>>(participantEntities);
 
@@ -46,19 +47,20 @@ namespace Events.DataAccess.Repositories
                 (int)Math.Ceiling((double)totalCount / pageSize));
         }
 
-        public async Task<Participant> GetById(Guid id)
+        public async Task<Participant> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             var participantEntity = await context.Participants
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception("Participant not found");
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken)
+                ?? throw new Exception("Participant not found");
 
             return mapper.Map<Participant>(participantEntity);
         }
 
-        public async Task<Guid> Delete(Guid id)
+        public async Task<Guid> Delete(Guid id, CancellationToken cancellationToken = default)
         {
             var participant = await context.Participants
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
             if (participant == null)
             {

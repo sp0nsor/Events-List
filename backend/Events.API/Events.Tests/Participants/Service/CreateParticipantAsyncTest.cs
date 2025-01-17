@@ -19,7 +19,7 @@ namespace Events.Tests.Participants.Service
 
             var participantId = Guid.NewGuid();
             participantRepoMock
-                .Setup(r => r.Create(It.IsAny<Participant>()))
+                .Setup(r => r.Create(It.IsAny<Participant>(), CancellationToken.None))
                 .ReturnsAsync(participantId);
 
             //Act
@@ -27,11 +27,12 @@ namespace Events.Tests.Participants.Service
                 "TestFirstName",
                 "TestLastName",
                 new DateTime(1999, 9, 9),
-                "test@email.com");
+                "test@email.com",
+                CancellationToken.None);
 
             //Assert
             Assert.Equal(participantId, result);
-            participantRepoMock.Verify(r => r.Create(It.IsAny<Participant>()), Times.Once);
+            participantRepoMock.Verify(r => r.Create(It.IsAny<Participant>(), CancellationToken.None), Times.Once);
             unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
         }
     }

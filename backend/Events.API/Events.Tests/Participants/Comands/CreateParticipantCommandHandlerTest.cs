@@ -18,7 +18,8 @@ namespace Events.Tests.Participants.Comands
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<DateTime>(),
-                    It.IsAny<string>()))
+                    It.IsAny<string>(),
+                    CancellationToken.None))
                 .ReturnsAsync(expectedGuid);
 
             var handler = new CreateParticipantCommandHandler(mockParticipantsService.Object);
@@ -43,7 +44,8 @@ namespace Events.Tests.Participants.Comands
                 command.FirstName,
                 command.LastName,
                 command.BirthDate,
-                command.Email), Times.Once);
+                command.Email,
+                CancellationToken.None), Times.Once);
         }
     }
 }

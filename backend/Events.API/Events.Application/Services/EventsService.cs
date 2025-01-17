@@ -30,7 +30,8 @@ namespace Events.Application.Services
             string category,
             int maxParticipantCount,
             DateTime date,
-            IFormFile imageFile)
+            IFormFile imageFile,
+            CancellationToken cancellationToken)
         {
             var eventId = Guid.NewGuid();
 
@@ -46,23 +47,23 @@ namespace Events.Application.Services
                 maxParticipantCount,
                 image);
 
-            var id = await unitOfWork.Events.Create(@event);
+            var id = await unitOfWork.Events.Create(@event, cancellationToken);
             await unitOfWork.SaveChangesAsync();
 
             return id;
         }
 
-        public async Task<Guid> DeleteEventAsync(Guid eventId)
+        public async Task<Guid> DeleteEventAsync(Guid eventId, CancellationToken cancellationToken)
         {
-            var id = await unitOfWork.Events.Delete(eventId);
+            var id = await unitOfWork.Events.Delete(eventId, cancellationToken);
             await unitOfWork.SaveChangesAsync();
 
             return id;
         }
 
-        public async Task<EventDto?> GetEventByIdAsync(Guid id)
+        public async Task<EventDto?> GetEventByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var @event = await unitOfWork.Events.GetById(id);
+            var @event = await unitOfWork.Events.GetById(id, cancellationToken);
 
             return mapper.Map<EventDto?>(@event);
         }
@@ -73,6 +74,7 @@ namespace Events.Application.Services
             string? searchCategory,
             string? sortItem,
             string? sortOrder,
+            CancellationToken cancellationToken,
             int page = 1,
             int pageSize = 10)
         {
@@ -83,7 +85,8 @@ namespace Events.Application.Services
                 sortItem,
                 sortOrder,
                 page,
-                pageSize);
+                pageSize,
+                cancellationToken);
 
             return mapper.Map<EventsPageDto>(eventsPage);
         }
@@ -95,7 +98,8 @@ namespace Events.Application.Services
             string palce,
             string category,
             int maxParticipantCount,
-            DateTime date)
+            DateTime date, 
+            CancellationToken cancellationToken)
         {
             var resultId = await unitOfWork.Events.Update(
                 id,
@@ -104,16 +108,17 @@ namespace Events.Application.Services
                 palce,
                 category,
                 maxParticipantCount,
-                date);
+                date, 
+                cancellationToken);
 
             await unitOfWork.SaveChangesAsync();
 
             return resultId;
         }
 
-        public async Task<List<ParticipantDto>> GetEventParticipantsAsync(Guid eventId)
+        public async Task<List<ParticipantDto>> GetEventParticipantsAsync(Guid eventId, CancellationToken cancellationToken)
         {
-            var participants = await unitOfWork.Events.GetParticipants(eventId);
+            var participants = await unitOfWork.Events.GetParticipants(eventId ,cancellationToken);
 
             return mapper.Map<List<ParticipantDto>>(participants);
         }

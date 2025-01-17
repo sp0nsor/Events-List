@@ -16,7 +16,7 @@ namespace Events.Application.Comands.Registrations.DeleteRegistration
 
         public async Task<Guid> Handle(DeleteRegistrationCommand request, CancellationToken cancellationToken)
         {
-            return await registrationsService.DeleteRegistrationAsync(request.RegistrationId);
+            return await registrationsService.DeleteRegistrationAsync(request.RegistrationId, cancellationToken);
         }
     }
 }

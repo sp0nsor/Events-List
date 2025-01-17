@@ -18,7 +18,8 @@ namespace Events.Application.Commands.Users.LoginUser
         {
             return await authService.LoginAsync(
                 request.Email,
-                request.Password);
+                request.Password,
+                cancellationToken);
         }
     }
 }

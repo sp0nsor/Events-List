@@ -23,7 +23,8 @@ namespace Events.Application.Services
             string firstName,
             string lastName,
             DateTime birthDate,
-            string email)
+            string email,
+            CancellationToken cancellationToken)
         {
             var participant = Participant.Create(
                 Guid.NewGuid(),
@@ -32,30 +33,30 @@ namespace Events.Application.Services
                 birthDate,
                 email);
 
-            var id = await unitOfWork.Participants.Create(participant);
+            var id = await unitOfWork.Participants.Create(participant, cancellationToken);
             await unitOfWork.SaveChangesAsync();
 
             return id;
         }
 
-        public async Task<Guid> DeleteParticipantAsync(Guid participantId)
+        public async Task<Guid> DeleteParticipantAsync(Guid participantId, CancellationToken cancellationToken)
         {
-            var id = await unitOfWork.Participants.Delete(participantId);
+            var id = await unitOfWork.Participants.Delete(participantId, cancellationToken);
             await unitOfWork.SaveChangesAsync();
 
             return id;
         }
 
-        public async Task<PageListDto<ParticipantDto>> GetParticipantsAsync(int page, int pageSize)
+        public async Task<PageListDto<ParticipantDto>> GetParticipantsAsync(int page, int pageSize, CancellationToken cancellationToken)
         {
-            var participantsPage = await unitOfWork.Participants.Get(page, pageSize);
+            var participantsPage = await unitOfWork.Participants.Get(page, pageSize, cancellationToken);
 
             return mapper.Map<PageListDto<ParticipantDto>>(participantsPage);
         }
 
-        public async Task<ParticipantDto?> GetParticipantByIdAsync(Guid participantId)
+        public async Task<ParticipantDto?> GetParticipantByIdAsync(Guid participantId, CancellationToken cancellationToken)
         {
-            var participant = await unitOfWork.Participants.GetById(participantId);
+            var participant = await unitOfWork.Participants.GetById(participantId, cancellationToken);
 
             return mapper.Map<ParticipantDto?>(participant);
         }

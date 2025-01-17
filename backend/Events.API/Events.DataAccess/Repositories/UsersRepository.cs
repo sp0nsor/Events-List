@@ -20,10 +20,12 @@ namespace Events.DataAccess.Repositories
             this.mapper = mapper;
         }
 
-        public async Task Add(User user)
+        public async Task Add(User user, CancellationToken cancellationToken = default)
         {
             var roleEntity = await context.Roles
-                .SingleOrDefaultAsync(r => r.Id == (int)Role.Admin)
+                .SingleOrDefaultAsync(r => 
+                    r.Id == (int)Role.Admin,
+                    cancellationToken)
                 ?? throw new InvalidOperationException();
 
             var userEntity = new UserEntity()
@@ -38,15 +40,21 @@ namespace Events.DataAccess.Repositories
             await context.AddAsync(userEntity);
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<User> GetByEmail(
+            string email,
+            CancellationToken cancellationToken = default)
         {
             var userEntity = await context.Users
-                .FirstOrDefaultAsync(u => u.Email == email);
+                .FirstOrDefaultAsync(u =>
+                    u.Email == email,
+                    cancellationToken);
 
             return mapper.Map<User>(userEntity);
         }
 
-        public async Task<HashSet<Permission>> GetUserPermissions(Guid userId)
+        public async Task<HashSet<Permission>> GetUserPermissions(
+            Guid userId,
+            CancellationToken cancellationToken = default)
         {
             var roles = await context.Users
                 .AsNoTracking()
@@ -54,7 +62,7 @@ namespace Events.DataAccess.Repositories
                 .ThenInclude(r => r.Permissions)
                 .Where(u => u.Id == userId)
                 .Select(u => u.Roles)
-                .ToArrayAsync();
+                .ToArrayAsync(cancellationToken);
 
             return roles
                 .SelectMany(r => r)

@@ -19,7 +19,8 @@ namespace Events.Application.Commands.Users.RegisterUser
             await usersService.RegisterAsync(
                 request.UserName,
                 request.Email,
-                request.Password);
+                request.Password,
+                cancellationToken);
         }
     }
 }

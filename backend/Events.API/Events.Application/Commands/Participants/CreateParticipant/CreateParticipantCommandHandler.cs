@@ -20,7 +20,8 @@ namespace Events.Application.Comands.Participants.CreateParticipant
                 request.FirstName,
                 request.LastName,
                 request.BirthDate,
-                request.Email);
+                request.Email,
+                CancellationToken.None);
         }
     }
 }

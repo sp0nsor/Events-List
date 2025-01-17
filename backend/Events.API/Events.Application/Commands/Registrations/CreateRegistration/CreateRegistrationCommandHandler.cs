@@ -18,7 +18,8 @@ namespace Events.Application.Comands.Registrations.CreateRegistration
         {
             return await registrationsService.CreateRegistrationAsync(
                 request.EventId,
-                request.ParticipantId);
+                request.ParticipantId,
+                cancellationToken);
         }
     }
 }
