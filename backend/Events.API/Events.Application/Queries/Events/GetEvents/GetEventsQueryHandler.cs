@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Events.Application.Queries.Events.GetEvents
 {
-    public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, EventsPageDto>
+    public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, PageListDto<EventDto>>
     {
         private readonly IEventsService eventsService;
 
@@ -13,7 +13,7 @@ namespace Events.Application.Queries.Events.GetEvents
             this.eventsService = eventsService;
         }
 
-        public async Task<EventsPageDto> Handle(GetEventsQuery request, CancellationToken cancellationToken)
+        public async Task<PageListDto<EventDto>> Handle(GetEventsQuery request, CancellationToken cancellationToken)
         {
             return await eventsService.GetEventsAsync(
                 request.SearchName,

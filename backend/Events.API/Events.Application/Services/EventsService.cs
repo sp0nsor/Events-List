@@ -68,7 +68,7 @@ namespace Events.Application.Services
             return mapper.Map<EventDto?>(@event);
         }
 
-        public async Task<EventsPageDto> GetEventsAsync(
+        public async Task<PageListDto<EventDto>> GetEventsAsync(
             string? searchName,
             string? searchPlace,
             string? searchCategory,
@@ -88,7 +88,8 @@ namespace Events.Application.Services
                 pageSize,
                 cancellationToken);
 
-            return mapper.Map<EventsPageDto>(eventsPage);
+            return mapper.Map<PageListDto<EventDto>>(eventsPage);
+
         }
 
         public async Task<Guid> UpdateEventAync(

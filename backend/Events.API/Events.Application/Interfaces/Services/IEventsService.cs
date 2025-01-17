@@ -17,7 +17,7 @@ namespace Events.Application.Interfaces.Services
         Task<Guid> DeleteEventAsync(Guid eventId, CancellationToken cancellationToken);
         Task<EventDto?> GetEventByIdAsync(Guid idб , CancellationToken cancellationToken);
         Task<List<ParticipantDto>> GetEventParticipantsAsync(Guid eventIdб , CancellationToken cancellationToken);
-        Task<EventsPageDto> GetEventsAsync(
+        Task<PageListDto<EventDto>> GetEventsAsync(
             string? searchName,
             string? searchPlace,
             string? searchCategory,

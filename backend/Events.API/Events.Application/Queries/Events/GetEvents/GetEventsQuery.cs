@@ -10,5 +10,5 @@ namespace Events.Application.Queries.Events.GetEvents
         string? SortItem,
         string? SortOrder,
         int Page = 1,
-        int PageSize = 10) : IRequest<EventsPageDto>;
+        int PageSize = 10) : IRequest<PageListDto<EventDto>>;
 }
