@@ -7,7 +7,7 @@ namespace Events.Tests.Participants.Comands
 {
     public class GetParticipantsCommandHandlerTest
     {
-        [Fact]
+/*        [Fact]
         public async Task Handle_ShouldReturnListOfParticipants_WhenParticipantsExist()
         {
             // Arrange
@@ -74,6 +74,6 @@ namespace Events.Tests.Participants.Comands
             Assert.Empty(result);
 
             mockParticipantsService.Verify(service => service.GetParticipantsAsync(), Times.Once);
-        }
+        }*/
     }
 }

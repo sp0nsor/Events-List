@@ -46,11 +46,11 @@ namespace Events.Application.Services
             return id;
         }
 
-        public async Task<List<ParticipantDto>> GetParticipantsAsync()
+        public async Task<PageListDto<ParticipantDto>> GetParticipantsAsync(int page, int pageSize)
         {
-            var participants = await unitOfWork.Participants.Get();
+            var participantsPage = await unitOfWork.Participants.Get(page, pageSize);
 
-            return mapper.Map<List<ParticipantDto>>(participants);
+            return mapper.Map<PageListDto<ParticipantDto>>(participantsPage);
         }
 
         public async Task<ParticipantDto?> GetParticipantByIdAsync(Guid participantId)

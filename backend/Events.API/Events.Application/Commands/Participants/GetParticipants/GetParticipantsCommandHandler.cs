@@ -5,7 +5,7 @@ using MediatR;
 namespace Events.Application.Comands.Participants.GetParticipants
 {
     public class GetParticipantsCommandHandler
-        : IRequestHandler<GetParticipantsCommand, List<ParticipantDto>>
+        : IRequestHandler<GetParticipantsCommand, PageListDto<ParticipantDto>>
     {
         private readonly IParticipantsService participantsService;
 
@@ -15,9 +15,9 @@ namespace Events.Application.Comands.Participants.GetParticipants
             this.participantsService = participantsService;
         }
 
-        public async Task<List<ParticipantDto>> Handle(GetParticipantsCommand request, CancellationToken cancellationToken)
+        public async Task<PageListDto<ParticipantDto>> Handle(GetParticipantsCommand request, CancellationToken cancellationToken)
         {
-            return await participantsService.GetParticipantsAsync();
+            return await participantsService.GetParticipantsAsync(request.Page, request.PageSize);
         }
     }
 }

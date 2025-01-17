@@ -7,6 +7,6 @@ namespace Events.Application.Interfaces.Services
         Task<Guid> CreateParticipantAsync(string firstName, string lastName, DateTime birthDate, string email);
         Task<Guid> DeleteParticipantAsync(Guid participantId);
         Task<ParticipantDto?> GetParticipantByIdAsync(Guid participantId);
-        Task<List<ParticipantDto>> GetParticipantsAsync();
+        Task<PageListDto<ParticipantDto>> GetParticipantsAsync(int page, int pageSize);
     }
 }

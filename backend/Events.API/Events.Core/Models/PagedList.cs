@@ -7,20 +7,20 @@
             int totalCount,
             int currentPage,
             int pageSize,
-            int totalPage)
+            int totalPages)
         {
             Items = items;
             TotalCount = totalCount;
             CurrentPage = currentPage;
             PageSize = pageSize;
-            TotalPage = totalPage;
+            TotalPages = totalPages;
         }
 
         public List<T> Items { get; }
         public int TotalCount { get; }
         public int CurrentPage { get; }
         public int PageSize { get; }
-        public int TotalPage { get; }
+        public int TotalPages { get; }
 
         public static PagedList<T> Create(List<T> items,
             int totalCount, 

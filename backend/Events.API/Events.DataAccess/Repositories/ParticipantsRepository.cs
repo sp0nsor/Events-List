@@ -25,11 +25,25 @@ namespace Events.DataAccess.Repositories
             return participantEntity.Id;
         }
 
-        public async Task<List<Participant>> Get()
+        public async Task<PagedList<Participant>> Get(int page, int pageSize)
         {
-            var participantsEntities = await context.Participants.ToListAsync();
+            var participantQuery = context.Participants.AsNoTracking();
 
-            return mapper.Map<List<Participant>>(participantsEntities);
+            var totalCount = await participantQuery.CountAsync();
+
+            var participantEntities = await participantQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var participants = mapper.Map<List<Participant>>(participantEntities);
+
+            return PagedList<Participant>.Create(
+                participants,
+                totalCount,
+                page,
+                pageSize,
+                (int)Math.Ceiling((double)totalCount / pageSize));
         }
 
         public async Task<Participant> GetById(Guid id)
