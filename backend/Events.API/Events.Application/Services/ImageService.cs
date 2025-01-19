@@ -24,5 +24,17 @@ namespace Events.Application.Services
 
             return image;
         }
+
+        public async Task<string> GetImageAsBase64(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new Exception("File not found");
+            }
+
+            byte[] bytes = await File.ReadAllBytesAsync(filePath);
+
+            return Convert.ToBase64String(bytes);
+        }
     }
 }

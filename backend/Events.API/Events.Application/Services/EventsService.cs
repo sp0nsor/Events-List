@@ -88,7 +88,28 @@ namespace Events.Application.Services
                 pageSize,
                 cancellationToken);
 
-            return mapper.Map<PageListDto<EventDto>>(eventsPage);
+            var eventDtos = (await Task.WhenAll(eventsPage.Items.Select(async e =>
+            {
+                var base64Image = await imageService.GetImageAsBase64(e.Image.FileName);
+
+                return new EventDto(
+                    e.Id,
+                    e.Name,
+                    e.Description,
+                    e.Place,
+                    e.Time,
+                    e.Category,
+                    e.MaxParticipantCount,
+                    new ImageDto(base64Image)
+                );
+            }))).ToList();
+
+            return new PageListDto<EventDto>(
+                eventDtos,
+                eventsPage.TotalCount,
+                eventsPage.CurrentPage,
+                eventsPage.PageSize,
+                eventsPage.TotalPages);
 
         }
 
