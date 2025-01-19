@@ -43,6 +43,14 @@ app.UseSerilogRequestLogging();
 
 app.MapControllers();
 
+app.UseCors(policy =>
+{
+    policy.WithOrigins("http://localhost:5173")
+          .AllowCredentials()
+          .AllowAnyHeader()
+          .AllowAnyMethod();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
