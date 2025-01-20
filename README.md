@@ -1,9 +1,11 @@
 # Project Setup Instructions
 
+## Backend Setup
+
 To run the project, follow these steps:
 
 1. **Update the Connection String**  
-   Open the `appsettings.json` file and update the connection string as follows:
+   Open the `appsettings.json` file and update the connection string:
 
    ```json
    "ConnectionStrings": {
@@ -36,3 +38,16 @@ To run the project, follow these steps:
 
 5. **Run the Application**  
    Open the solution in your IDE and run the application.
+
+## Frontend Setup
+
+1. **Install Dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Run the Application**
+   ```bash
+   npm run dev
+   ```
