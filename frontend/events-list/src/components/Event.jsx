@@ -1,4 +1,11 @@
-import { Card, CardBody, CardHeader, Divider, Text } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 
 export default function EventCard({
   name,
@@ -19,7 +26,14 @@ export default function EventCard({
         <Text>Дата: {time}</Text>
         <Text>Категория: {category}</Text>
         <Text>Количество участников: {maxParticipantCount}</Text>
-        <Text>{image.fileName}</Text>
+        {image.fileName && (
+          <Image
+            src={`data:image/png;base64,${image.fileName}`}
+            alt={name}
+            borderRadius="lg"
+            mb={4}
+          />
+        )}
       </CardBody>
     </Card>
   );
