@@ -43,27 +43,27 @@ namespace Events.API.Controllers
 
         [HttpGet]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetEvents([FromQuery] GetEventsQuery command)
+        public async Task<ActionResult> GetEvents([FromQuery] GetEventsQuery query)
         {
-            var response = await mediator.Send(command);
+            var response = await mediator.Send(query);
 
             return Ok(response);
         }
 
         [HttpGet("Participants")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetEventParticipants([FromQuery] GetEventParticipantsQuery command)
+        public async Task<ActionResult> GetEventParticipants([FromQuery] GetEventParticipantsQuery query)
         {
-            var response = await mediator.Send(command);
+            var response = await mediator.Send(query);
 
             return Ok(response);
         }
 
         [HttpGet("id")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<ActionResult> GetEventById([FromQuery] GetEventByIdQuery command)
+        public async Task<ActionResult> GetEventById([FromQuery] GetEventByIdQuery query)
         {
-            var response = await mediator.Send(command);
+            var response = await mediator.Send(query);
 
             return Ok(response);
         }
